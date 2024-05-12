@@ -21,7 +21,6 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
-    "@ngbmodule/material-carousel": "^0.7.2",
     "firebase": "10.11.1",
     "ngx-clipboard": "^16.0.0",
     "rxjs": "~7.8.0",
