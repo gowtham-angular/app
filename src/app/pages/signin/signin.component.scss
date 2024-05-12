@@ -1,0 +1,25 @@
+.container {
+    margin: 50px;
+    padding: 10px;
+  }
+  
+  .card-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  
+    &__content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+     
+    }
+  
+    &__button {
+      margin-top: 20px;
+    }
+  }
+  

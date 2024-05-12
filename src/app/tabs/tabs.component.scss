@@ -1,0 +1,28 @@
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    display: flex;
+  }
+  
+  .tab {
+    flex-grow: 1;
+    text-align: center;
+    padding: 15px;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mat-icon {
+    margin-right: 5px;
+  }
+  
+  .tab:hover {
+    background-color: #555;
+  }

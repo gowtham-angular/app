@@ -1,0 +1,22 @@
+.no-announcement-card {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+}
+
+.content {
+  text-align: center;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+img {
+  width: 100px; /* adjust size as needed */
+  height: auto;
+  margin-bottom: 20px; /* adjust spacing as needed */
+}

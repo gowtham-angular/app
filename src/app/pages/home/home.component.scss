@@ -1,0 +1,33 @@
+.carousel {
+  height: 150px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  margin: 20px;
+  gap: 10px;
+}
+.second-row {
+  background-color: beige;
+  height: 300px;
+  padding-top: 1px;
+}
+.container__second {
+  display: flex;
+  flex-direction: row;
+  margin: 20px;
+  gap: 10px;
+}
+.card-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.product-list {
+    margin: 10px;
+    gap: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}

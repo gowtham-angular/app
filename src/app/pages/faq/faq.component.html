@@ -1,0 +1,12 @@
+<app-title-header title="Faq"></app-title-header>
+
+<div *ngFor="let item of data" class="container">
+    <p>
+        <b>Question {{item.id}} :</b>
+        {{item.question}}
+    </p>
+    <h5>
+        <strong>Answer:</strong>
+        {{item.answer}}
+    </h5>
+</div>

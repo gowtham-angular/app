@@ -1,0 +1,26 @@
+.carousel {
+  display: flex;
+  align-items: center;
+}
+
+.slides-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+.slide {
+  width: 100%;
+  display: inline-block;
+  transition: transform 0.5s ease;
+}
+
+img {
+  width: 100%;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}

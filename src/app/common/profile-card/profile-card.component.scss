@@ -1,0 +1,61 @@
+.profile-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+  border-radius: 16px;
+  background-color: #c7dbde;
+  height: 150px;
+  width: calc(100vw - 30px);
+
+  .profile-pic {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    background-color: azure;
+    margin-left: 10px;
+    background-image: url("../../../assets/hero1.jpg"); /* Background image URL */
+    background-size: cover; /* Adjust the size of the background image */
+    background-position: center; /* Center the background image */
+  }
+
+  .profile-content {
+    margin: 10px;
+    width: 170px;
+    .username {
+      font-size: 20px;
+    }
+    .userId {
+      font-size: 18px;
+      font-weight: 700;
+      background-color: #cd3f1f;
+      padding: 3px;
+      border-radius: 5px;
+      width: 60px;
+      color: #fff;
+    }
+  }
+
+  .profile-points {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    background-color: azure;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    p {
+      margin-top: 10px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+}
+
+.mat-elevation-z4 {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}

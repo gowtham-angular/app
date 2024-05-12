@@ -1,0 +1,25 @@
+.dynamic-card {
+    width: 180px; /* Adjust width as needed */
+    height: 100px;
+    margin: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  
+    &:hover {
+      transform: scale(1.05);
+    }
+  
+    img {
+      width: 100%;
+      height: auto;
+    }
+  
+    .card-content {
+      padding: 10px;
+      text-align: center;
+      color: white;
+    }
+  }
+  
