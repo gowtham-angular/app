@@ -1,17 +1,16 @@
 .product-card {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
   margin-bottom: 10px;
-  width: 170px;
-  height: 150px;
+  background-color: white;
 
   img {
-    width: 100px; /* Adjust size as needed */
-    height: auto;
+    width: 60px;
+    height: 60px; /* Adjust size as needed */
     margin-right: 10px; /* Adjust spacing as needed */
   }
 

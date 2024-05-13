@@ -1,10 +1,17 @@
 <app-title-header title="Deposit"></app-title-header>
 
-<mat-card class="no-announcement-card">
+<!-- <mat-card class="no-announcement-card">
     <mat-card-content class="content">
         <div class="flex-container">
             <img src="../../../assets/money-bag.png" alt="No Announcement Image">
             <p>Please contact customer care for faster deposit.</p>
         </div>
     </mat-card-content>
-</mat-card>
+</mat-card> -->
+
+<div class="customer-support-card" (click)="openWhatsApp()" style="margin-top: 50px;">
+    <div class="card-content">
+        <img src="../../../assets/whatsapp.jpg" alt="WhatsApp Icon">
+        <p class="header">Online support from 9 AM to 9 PM</p>
+    </div>
+</div>

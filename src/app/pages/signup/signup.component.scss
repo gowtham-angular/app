@@ -1,6 +1,10 @@
 .container {
   margin: 50px;
-  padding: 10px;
+ 
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .card-container {
@@ -9,6 +13,7 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
+  padding: 10px;
 
   &__content {
     display: flex;
@@ -20,5 +25,9 @@
 
   &__button {
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }

@@ -3,26 +3,23 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid #ccc;
   border-radius: 4px;
   overflow: hidden;
   height: 100px;
-  width: 90px;
-  padding-top: 5px;
+  width: 70px;
+  background-color: #ccc;
+  margin: 5px;
+  flex-wrap: wrap;
 }
 
 img {
   width: 50px;
   height: 50px;
 }
-
-.card-content {
-  padding: 5px;
-}
-
-h5 {
+h6 {
   margin: 0;
   font-weight: 600;
+  font-size: 10px;
 }
 
 .subtitle {

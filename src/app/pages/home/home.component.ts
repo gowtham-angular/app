@@ -18,7 +18,7 @@ export class HomeComponent {
   ];
 
   banner = { imageUrl: '../../../assets/money-bag.png', title: 'Recharge Benefits', backgroundColor: '#004fac' };
-  subscription = { imageUrl: '../../../assets/dollar-coins.png', title: 'Subscription Membership', backgroundColor: '#bac007' };
+  subscription = { imageUrl: '../../../assets/dollar-coins.png', title: 'Subscription Membership', backgroundColor: '#122caf' };
 
  
   constructor(private _productService: ProductsService) {

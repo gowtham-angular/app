@@ -1,33 +1,44 @@
-.carousel {
-  height: 150px;
-}
-
 .container {
   display: flex;
-  flex-direction: row;
-  margin: 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
-}
-.second-row {
-  background-color: beige;
-  height: 300px;
-  padding-top: 1px;
-}
-.container__second {
-  display: flex;
-  flex-direction: row;
-  margin: 20px;
-  gap: 10px;
-}
-.card-container {
-  display: flex;
-  flex-direction: row;
-}
 
-.product-list {
-    margin: 10px;
-    gap: 20px;
+  &__reading-cards {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__firstRow,
+  &__secondRow {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__scrollview {
+    height: auto;
+    min-height: 500px;
+    overflow-y: auto;
+   
+
+    &-product-list {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+
+      gap: 10px;
+    }
+  }
 }

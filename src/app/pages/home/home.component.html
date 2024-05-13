@@ -1,36 +1,31 @@
-<div class="carousel">
+<div class="container">
+    <div class="carousel">
 
-</div>
-<div class="card-container">
-    <app-small-card *ngFor="let card of cards" [imageUrl]="card.imageUrl" [title]="card.title" [backgroundColor]="card.backgroundColor">
-    </app-small-card>
-</div>
-<div style="height: auto; min-height: 500px; overflow-y: auto; ">
-    <div class="container">
-        <div *ngFor="let item of firstRow">
-            <app-cards [imageUrl]="item.img" [title]="item.title" [subtitle]="item.subTitle" [link]="item.link"> </app-cards>
-        </div>
     </div>
-    <div class="card-container">
+
+
+    <div class="container__reading-cards">
+        <app-small-card *ngFor="let card of cards" [imageUrl]="card.imageUrl" [title]="card.title" [backgroundColor]="card.backgroundColor">
+        </app-small-card>
+    </div>
+
+    <div class="container__firstRow">
+        <app-cards *ngFor="let item of firstRow" [imageUrl]="item.img" [title]="item.title" [subtitle]="item.subTitle" [link]="item.link"> </app-cards>
+    </div>
+    <div class="container__card">
         <app-banner [imageUrl]="banner.imageUrl" [title]="banner.title" [backgroundColor]="banner.backgroundColor"></app-banner>
     </div>
 
-    <div class="second-row">
-        <div class="container__second">
-            <div *ngFor="let item of secondRow">
-                <app-cards [imageUrl]="item.img" [title]="item.title" [subtitle]="item.subTitle" [link]="item.link"> </app-cards>
-            </div>
-        </div>
-        <div class="card-container">
-            <app-banner [imageUrl]="subscription.imageUrl" [title]="subscription.title" [backgroundColor]="subscription.backgroundColor"></app-banner>
-        </div>
+    <div class="container__secondRow">
+        <app-cards *ngFor="let item of secondRow" [imageUrl]="item.img" [title]="item.title" [subtitle]="item.subTitle" [link]="item.link"> </app-cards>
     </div>
-    <div class="product-list">
-        <div *ngFor="let product of products">
-            <app-products [product]="product"> </app-products>
+    <app-banner [imageUrl]="subscription.imageUrl" [title]="subscription.title" [backgroundColor]="subscription.backgroundColor"></app-banner>
+    <div class=" container__scrollview" >
+        <div class="container__scrollview-product-list">
+            <app-products *ngFor="let product of products" [product]="product"> </app-products>
         </div>
-
+        <div style="margin-bottom: 100px;"></div>
     </div>
-    <div style="margin-bottom: 100px;"></div>
 </div>
+
 <app-tabs></app-tabs>
