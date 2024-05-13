@@ -3,7 +3,7 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: rgb(255, 64, 129);
+    background-color: #D9008D;
     display: flex;
   }
   
@@ -24,8 +24,8 @@
   }
   
   .tab:hover {
-    background-color: #555;
+    background-color: rgb(10, 40, 133)
   }
   .active {
-    background-color:rgb(68, 83, 167);
+    background-color:rgb(10, 40, 133)
   }
