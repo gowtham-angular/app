@@ -99,7 +99,6 @@ export class UserService {
   }
 
   filterUsersByEmail(users: any, email: string): any {
-    console.log(users);
     return users.filter((user: any) => user.email === email);
   }
   generateUniqueId(): string {
@@ -121,5 +120,21 @@ export class UserService {
   updateLastGeneratedId(id: string) {
     // Update the last generated ID in Firestore
     this.firestore.collection('id').doc('lastId').set({ lastId: parseInt(id, 10) });
+  }
+
+  submitBankDetails(formData: any, id: any) {
+    this.firestore.collection('bankAccounts').doc(id).set(formData)// Add user data to collection
+      .then(() => {
+        this.updateLastGeneratedId(id);
+        this.utilService.getSnackBar('Bank Details Saved Successfully!!!');
+
+      })
+      .catch(error => {
+        console.error('Error adding user:', error);
+      });
+  }
+
+  getBankDetails(id: any) {
+    return this.firestore.collection('bankAccounts').doc(id).valueChanges();
   }
 }
