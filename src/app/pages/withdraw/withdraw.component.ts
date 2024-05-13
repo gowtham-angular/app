@@ -20,7 +20,6 @@ export class WithdrawComponent {
       upiId: ['', Validators.required],
     });
 
-
     this.userService.getUserData().subscribe((users: any) => {
       this.getAuthenticatedUser(users);
     });
