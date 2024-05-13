@@ -13,8 +13,8 @@ export class HomeComponent {
   products: any = [];
 
   cards = [
-    { imageUrl: '../../../assets/reading.png', title: 'Reading Mall', backgroundColor: '#007bff' },
-    { imageUrl: '../../../assets/invite.png', title: 'Invite Friends', backgroundColor: '#28a745' },
+    { imageUrl: '../../../assets/reading.png', title: 'Reading Mall', backgroundColor: '#007bff', link: '/orders' },
+    { imageUrl: '../../../assets/invite.png', title: 'Invite Friends', backgroundColor: '#28a745', link: '/orders' },
   ];
 
   banner = { imageUrl: '../../../assets/money-bag.png', title: 'Recharge Benefits', backgroundColor: '#004fac' };

@@ -16,6 +16,7 @@ import { ServiceComponent } from './tabs/service/service.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { AccountsComponent } from './pages/accounts/accounts.component';
 import { AuthGuard } from './auth-guard.service';
+import { PlayComponent } from './pages/play/play.component';
 
 const routes: Routes = [
   { path: 'signup', component: SignupComponent, },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'service', component: ServiceComponent, canActivate: [AuthGuard] },
   { path: 'orders', component: OrdersComponent, canActivate: [AuthGuard] },
   { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
+  { path: 'play', component: PlayComponent, canActivate: [AuthGuard] },
   { path: 'faq', component: FaqComponent, canActivate: [AuthGuard] },
   { path: 'announcement', component: AnnouncementComponent, canActivate: [AuthGuard] },
   { path: 'deposit', component: DepositComponent, canActivate: [AuthGuard] },

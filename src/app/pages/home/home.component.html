@@ -1,11 +1,11 @@
+<app-title-header title="Home"></app-title-header>
 <div class="container">
     <div class="carousel">
 
     </div>
 
-
     <div class="container__reading-cards">
-        <app-small-card *ngFor="let card of cards" [imageUrl]="card.imageUrl" [title]="card.title" [backgroundColor]="card.backgroundColor">
+        <app-small-card *ngFor="let card of cards" [link] ="card.link" [imageUrl]="card.imageUrl" [title]="card.title" [backgroundColor]="card.backgroundColor">
         </app-small-card>
     </div>
 

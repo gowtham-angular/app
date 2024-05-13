@@ -1,18 +1,28 @@
 <app-title-header title="Details"></app-title-header>
-<div style="margin: 10px; display: flex; flex-direction: row; justify-content: space-between;">
-    <h5 style="color: gray;">Data provided by the system</h5>
-    <div style="color: black; font-weight: 700;">
-        <p>Account Balance: ₹ {{user?.totalAmount}}</p>
-    </div>
-</div>
+<div class="background-container">
 
-<mat-tab-group>
-    <mat-tab label="Ranking Tasks">
-        <app-nodata [imageUrl]="rankingTasks.imageUrl" [title]="rankingTasks.title"></app-nodata>
-    </mat-tab>
-    <mat-tab label="Reading">
-        <app-nodata [imageUrl]="reading.imageUrl" [title]="reading.title"></app-nodata>
-    </mat-tab>
-</mat-tab-group>
+    <div
+        style="padding: 10px; 
+        display: flex; 
+        flex-direction: row;
+         justify-content: space-between;
+         border-bottom: 2px solid rgb(68, 83, 167)">
+        <h5 style="color: gray;">Data provided by the system</h5>
+        <div style="color: black; font-weight: 700;">
+            <p>Account Balance: ₹ {{user?.totalAmount}}</p>
+        </div>
+    </div>
+
+    <mat-tab-group>
+        <mat-tab label="Ranking Tasks">
+            <app-nodata [imageUrl]="rankingTasks.imageUrl"
+                [title]="rankingTasks.title"></app-nodata>
+        </mat-tab>
+        <mat-tab label="Reading">
+            <app-nodata [imageUrl]="reading.imageUrl"
+                [title]="reading.title"></app-nodata>
+        </mat-tab>
+    </mat-tab-group>
+</div>
 
 <app-tabs></app-tabs>

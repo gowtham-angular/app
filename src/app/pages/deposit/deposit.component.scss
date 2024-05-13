@@ -3,10 +3,12 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  background-color: whitesmoke;
 }
 
 .content {
   text-align: center;
+
 }
 
 .flex-container {
@@ -34,6 +36,7 @@ img {
   border-radius: 8px;
   margin: 10px;
   transition: transform 0.3s ease;
+  background-color: whitesmoke;
 
   &:hover {
     transform: scale(1.05);

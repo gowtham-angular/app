@@ -36,6 +36,7 @@ import { AccountsComponent } from './pages/accounts/accounts.component';
 import { ProfileCardComponent } from './common/profile-card/profile-card.component';
 import { PriceCardComponent } from './common/price-card/price-card.component';
 import { MissionCardComponent } from './common/mission-card/mission-card.component';
+import { PlayComponent } from './pages/play/play.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { MissionCardComponent } from './common/mission-card/mission-card.compone
     AccountsComponent,
     ProfileCardComponent,
     PriceCardComponent,
-    MissionCardComponent
+    MissionCardComponent,
+    PlayComponent
   ],
   imports: [
     BrowserModule,
