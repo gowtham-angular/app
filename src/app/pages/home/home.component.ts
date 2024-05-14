@@ -20,7 +20,7 @@ export class HomeComponent {
   banner = { imageUrl: '../../../assets/money-bag.png', title: 'Recharge Benefits', backgroundColor: '#004fac' };
   subscription = { imageUrl: '../../../assets/dollar-coins.png', title: 'Subscription Membership', backgroundColor: '#122caf' };
 
- 
+
   constructor(private _productService: ProductsService) {
     this.firstRow = [
       {
@@ -77,10 +77,11 @@ export class HomeComponent {
     ]
     this.getProducts();
   }
-
   getProducts() {
     this._productService.getAllProducts().subscribe((data: any) => {
-      this.products = data;
+      if (data) {
+        this.products = data.filter((item: any) => item.level === 'products');
+      }
     })
   }
 }
