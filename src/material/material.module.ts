@@ -16,6 +16,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
     imports: [
@@ -35,7 +36,8 @@ import { MatSelectModule } from '@angular/material/select';
         MatAutocompleteModule,
         MatProgressSpinnerModule,
         MatDividerModule,
-        MatSelectModule
+        MatSelectModule,
+        MatDialogModule
     ],
     exports: [
         MatSlideToggleModule,
@@ -54,7 +56,8 @@ import { MatSelectModule } from '@angular/material/select';
         MatAutocompleteModule,
         MatProgressSpinnerModule,
         MatDividerModule,
-        MatSelectModule
+        MatSelectModule,
+        MatDialogModule
     ]
 })
 export class MaterialModule { }

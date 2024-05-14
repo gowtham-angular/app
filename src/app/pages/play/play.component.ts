@@ -1,10 +1,85 @@
 import { Component } from '@angular/core';
+import { ProductsService } from '../../service/products.service';
+import { UserService } from '../../service/user.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { UtilsService } from '../../service/utils.service';
+import { DetailsDialogComponent } from '../../common/details-dialog/details-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
-@Component({
-  selector: 'app-play',
-  templateUrl: './play.component.html',
-  styleUrl: './play.component.scss'
-})
-export class PlayComponent {
 
-}
+  @Component({
+    selector: 'app-play',
+    templateUrl: './play.component.html',
+    styleUrl: './play.component.scss'
+  })
+  export class PlayComponent {
+
+    products: any;
+    user: any;
+    constructor(private _productService: ProductsService,
+      private userService: UserService, private auth: AngularFireAuth, private utilService: UtilsService,
+      public dialog: MatDialog
+    ) {
+      this.getProducts();
+
+      this.userService.getUserData().subscribe((users: any) => {
+        this.getAuthenticatedUser(users);
+      });
+    }
+
+    start() {
+      if (this.user) {
+
+        if (this.user?.totalAmount < 1) {
+          this.utilService.getSnackBar("Please Recharge before start the tasks.")
+        } else {
+          const dialogRef = this.dialog.open(DetailsDialogComponent);
+
+          dialogRef.afterClosed().subscribe((result: any) => {
+            console.log('Dialog closed');
+          });
+        }
+      }
+    }
+
+    getProducts() {
+      this._productService.getAllProducts().subscribe((data: any) => {
+        if (data) {
+          let tempProducts = data.filter((item: any) => item.level === 'products');
+          this.products = this.chooseRandomTwo(tempProducts);
+          console.log(this.products);
+        }
+      })
+    }
+
+    chooseRandomTwo(array: any[]) {
+      const randomIndexes: any = [];
+      while (randomIndexes.length < 2) {
+        const randomIndex = Math.floor(Math.random() * array.length);
+        if (!randomIndexes.includes(randomIndex)) {
+          randomIndexes.push(randomIndex);
+        }
+      }
+      return [array[randomIndexes[0]], array[randomIndexes[1]]];
+    }
+
+    getAuthenticatedUser(users: any) {
+      try {
+        this.auth.user.subscribe((user: any) => {
+          console.log('dataasas', user);
+          if (user) {
+            const email = user.email;
+            const filteredUser = this.userService.filterUsersByEmail(users, email);
+            this.user = filteredUser[0];
+          }
+        });
+
+      } catch (error) {
+
+      }
+
+    }
+
+  }
+
+

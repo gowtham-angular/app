@@ -1,5 +1,16 @@
-<app-title-header title="Play"></app-title-header>
+<app-title-header title="Ranking Tasks"></app-title-header>
 <div class="background-container">
+    <app-balance-card [user] = "user"></app-balance-card>
 
+    <div class="start_button">
+        <button mat-raised-button color="warn" (click)="start()"> <mat-icon>play_circle</mat-icon> Account Start</button>
+    </div>
+
+    <div class="ranking_tasks">
+        <h3>Ranking Tasks Commodity</h3>
+    </div>
+    <div class="product_list">
+        <app-products *ngFor="let product of products" [product]="product"> </app-products>
+    </div>
 </div>
 <app-tabs></app-tabs>

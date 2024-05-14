@@ -1,4 +1,33 @@
 .background-container {
-    background-color: white;
-    height: 100%;
+  background-color: white;
+  height: 100%;
+  padding: 20px;
+
+  .start_button {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .ranking_tasks {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: orangered;
+
+    h3 {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+
+  .product_list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+  }
 }

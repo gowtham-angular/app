@@ -5,7 +5,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from '@angular/fire/compat';
 import { MaterialModule } from '../material/material.module';
-
+import { MatDialogModule } from '@angular/material/dialog';
 import { AppComponent } from './app.component';
 import { environment } from '../../environment.prod';
 import { SignupComponent } from './pages/signup/signup.component';
@@ -37,6 +37,9 @@ import { ProfileCardComponent } from './common/profile-card/profile-card.compone
 import { PriceCardComponent } from './common/price-card/price-card.component';
 import { MissionCardComponent } from './common/mission-card/mission-card.component';
 import { PlayComponent } from './pages/play/play.component';
+import { BalanceCardComponent } from './common/balance-card/balance-card.component';
+import { DetailsDialogComponent } from './common/details-dialog/details-dialog.component';
+import { RankingComponent } from './common/ranking/ranking.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +70,10 @@ import { PlayComponent } from './pages/play/play.component';
     ProfileCardComponent,
     PriceCardComponent,
     MissionCardComponent,
-    PlayComponent
+    PlayComponent,
+    BalanceCardComponent,
+    DetailsDialogComponent,
+    RankingComponent
   ],
   imports: [
     BrowserModule,

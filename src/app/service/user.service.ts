@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { ProductsService } from './products.service';
 
 interface User {
   userName: string,
@@ -18,7 +19,10 @@ interface User {
 export class UserService {
   lastGeneratedId!: number;
   users!: any[];
-  constructor(private auth: AngularFireAuth, private utilService: UtilsService, private firestore: AngularFirestore, private _router: Router) {
+  products: any;
+  constructor(private auth: AngularFireAuth, private utilService: UtilsService,
+    private firestore: AngularFirestore, private _router: Router,
+    private _productService: ProductsService) {
 
     // Fetch the last generated ID from Firestore
     this.firestore.collection('id').doc('lastId').valueChanges().subscribe((data: any) => {
@@ -58,11 +62,40 @@ export class UserService {
       .then(() => {
         this.updateLastGeneratedId(id);
         this.utilService.getSnackBar('User Registered with ID Successfully!!!');
+        this.getProducts(id);
+
 
       })
       .catch(error => {
         console.error('Error adding user:', error);
       });
+  }
+
+  assignVipOneData(id: any) {
+
+    let docData = this.products;
+    this.firestore.collection('vip_one').doc(id).set({ ...docData })// Add user data to collection
+      .then(() => {
+        console.log('vip1_updated');
+      })
+      .catch(error => {
+        console.error('Error adding user:', error);
+      });
+  }
+
+  getProducts(id: any) {
+    this._productService.getAllProducts().subscribe((data: any) => {
+      if (data) {
+        // Add a new property to each object using map
+        let newArray = data.map((obj: any) => ({
+          ...obj,
+          isSubmitted: false
+        }));
+        this.products = newArray.filter((item: any) => item.level === 'vip_1');
+        console.log("this.products", this.products);
+        this.assignVipOneData(id);
+      }
+    })
   }
 
   async signIntoFirebase(userData: any) {

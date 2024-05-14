@@ -1,0 +1,15 @@
+
+<div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+
+
+<h2 mat-dialog-title>Details</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Time:</mat-label>
+    <input matInput [value]="currentTime" disabled>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button (click)="startTask()" color="primary" style="padding: 20px;">Match successful, start ranking the task</button>
+</mat-dialog-actions>
+</div>

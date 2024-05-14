@@ -1,0 +1,40 @@
+.card-container{
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    padding: 5px;
+    background-color: aliceblue;
+
+    &__balance {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        
+        .text {
+            padding: 10px;
+
+            .balance {
+                font-size: 12px;
+                font-weight: bold;
+                margin: 0;
+                padding-bottom: 5px;
+            }
+
+            .money {
+                color: orangered;
+                font-size: 16px;
+                font-weight: bold;
+            }
+        }
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: row;
+        justify-content:center;
+        gap: 50px
+    }
+}
