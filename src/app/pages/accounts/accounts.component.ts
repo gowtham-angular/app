@@ -20,11 +20,9 @@ export class AccountsComponent {
   getAuthenticatedUser(users: any) {
     try {
       this.auth.user.subscribe((user: any) => {
-        console.log('dataasas', user);
         if (user) {
           const email = user.email;
           const filteredUser = this.userService.filterUsersByEmail(users, email);
-          console.log(filteredUser);
           this.user = filteredUser[0];
         }
       });

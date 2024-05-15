@@ -22,8 +22,6 @@ export class DetailsDialogComponent implements OnInit {
   }
 
   startTask() {
-    // Perform actions when the button is clicked
-    console.log('Match successful, start ranking the task');
     // Close the dialog
     this.router.navigate(['/orders'])
     this.dialogRef.close();

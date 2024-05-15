@@ -18,7 +18,6 @@ export class SigninComponent {
   }
 
   onSubmit() {
-    console.log(this.form.value);
     if (this.form.valid) {
       this.userService.signIntoFirebase(this.form.value)
     }

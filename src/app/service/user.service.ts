@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ProductsService } from './products.service';
+import { FirestoreService } from './firestore.service';
 
 interface User {
   userName: string,
@@ -19,10 +20,11 @@ interface User {
 export class UserService {
   lastGeneratedId!: number;
   users!: any[];
-  products: any;
+  products!: any[];
   constructor(private auth: AngularFireAuth, private utilService: UtilsService,
     private firestore: AngularFirestore, private _router: Router,
-    private _productService: ProductsService) {
+    private _productService: ProductsService,
+    private fireStoreService: FirestoreService) {
 
     // Fetch the last generated ID from Firestore
     this.firestore.collection('id').doc('lastId').valueChanges().subscribe((data: any) => {
@@ -74,9 +76,9 @@ export class UserService {
   assignVipOneData(id: any) {
 
     let docData = this.products;
-    this.firestore.collection('vip_one').doc(id).set({ ...docData })// Add user data to collection
+    this.firestore.collection('vip_one').doc(id).update({ arrayField: docData })// Add user data to collection
       .then(() => {
-        console.log('vip1_updated');
+        this.fireStoreService.createVipOneSubmittedCollection('vip_one_submitted', id);
       })
       .catch(error => {
         console.error('Error adding user:', error);
@@ -86,13 +88,12 @@ export class UserService {
   getProducts(id: any) {
     this._productService.getAllProducts().subscribe((data: any) => {
       if (data) {
-        // Add a new property to each object using map
         let newArray = data.map((obj: any) => ({
           ...obj,
           isSubmitted: false
         }));
         this.products = newArray.filter((item: any) => item.level === 'vip_1');
-        console.log("this.products", this.products);
+        this.fireStoreService.createVipOneSubmittedCollection('vip_one', id);
         this.assignVipOneData(id);
       }
     })
@@ -170,4 +171,6 @@ export class UserService {
   getBankDetails(id: any) {
     return this.firestore.collection('bankAccounts').doc(id).valueChanges();
   }
+
+
 }

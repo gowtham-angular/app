@@ -1,9 +1,8 @@
 <mat-card class="container">
     <div>
-        <p>No : {{data?.id}}</p>
+        <p>No : {{randomData?.id}}</p>
         <p>{{'payment pending'}}</p>
 
-        <button mat-raised-button color="primary" *ngIf="!data?.isSubmitted" (click) ="submitVipOne()"> Submit</button>
-        <p *ngIf=""data?.isSubmitted>Submitted Successfully</p>
+        <button mat-raised-button color="primary" *ngIf="!randomData?.isSubmitted" (click) ="submitVipOne()"> Submit</button>
     </div>
 </mat-card> 

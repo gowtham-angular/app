@@ -33,7 +33,6 @@ export class SignupComponent {
   }
 
   onSubmit() {
-    console.log(this.form.value);
     if (this.form.valid) {
       this.userService.signUptoFirebase(this.form.value).then((res) => {
         this._router.navigate(['home']);

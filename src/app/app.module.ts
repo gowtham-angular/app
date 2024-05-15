@@ -40,6 +40,7 @@ import { PlayComponent } from './pages/play/play.component';
 import { BalanceCardComponent } from './common/balance-card/balance-card.component';
 import { DetailsDialogComponent } from './common/details-dialog/details-dialog.component';
 import { RankingComponent } from './common/ranking/ranking.component';
+import { SubmittedCardsComponent } from './common/submitted-cards/submitted-cards.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { RankingComponent } from './common/ranking/ranking.component';
     PlayComponent,
     BalanceCardComponent,
     DetailsDialogComponent,
-    RankingComponent
+    RankingComponent,
+    SubmittedCardsComponent
   ],
   imports: [
     BrowserModule,

@@ -16,7 +16,8 @@
     <mat-tab-group>
         <mat-tab label="Ranking Tasks">
 
-            <app-ranking [data] ="randomObject" [value]="filteredArray" ></app-ranking>
+            <app-ranking [randomData] ="randomData" [originalData]="originalData" ></app-ranking>
+            <app-submitted-cards *ngFor="let item of submittedData" [user] ="user" [submittedData]="item"></app-submitted-cards>
             <app-nodata [imageUrl]="rankingTasks.imageUrl"
                 [title]="rankingTasks.title"></app-nodata>
         </mat-tab>

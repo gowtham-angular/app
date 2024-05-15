@@ -47,7 +47,6 @@ import { MatDialog } from '@angular/material/dialog';
         if (data) {
           let tempProducts = data.filter((item: any) => item.level === 'products');
           this.products = this.chooseRandomTwo(tempProducts);
-          console.log(this.products);
         }
       })
     }
@@ -66,7 +65,6 @@ import { MatDialog } from '@angular/material/dialog';
     getAuthenticatedUser(users: any) {
       try {
         this.auth.user.subscribe((user: any) => {
-          console.log('dataasas', user);
           if (user) {
             const email = user.email;
             const filteredUser = this.userService.filterUsersByEmail(users, email);
