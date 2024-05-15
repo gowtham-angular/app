@@ -17,7 +17,7 @@ export class HomeComponent {
     { imageUrl: '../../../assets/invite.png', title: 'Invite Friends', backgroundColor: '#005028', link: '/service' },
   ];
 
-  banner = { imageUrl: '../../../assets/money-bag.png', title: 'Recharge Benefits', backgroundColor: '#004fac' };
+  banner = { imageUrl: '../../../assets/apple-iphone.jpg', title: ' ', backgroundColor: '#004fac' };
   subscription = { imageUrl: '../../../assets/dollar-coins.png', title: 'Subscription Membership', backgroundColor: '#122caf' };
 
 

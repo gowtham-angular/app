@@ -10,6 +10,9 @@ export class UtilsService {
   isLoading$ = this.loadingSubject.asObservable();
 
   isOrderSubmitted = new BehaviorSubject<boolean>(false);
+  taskCount = new BehaviorSubject(0);
+  amount = new BehaviorSubject(0);
+  taskAmount = new BehaviorSubject(0);
   constructor(private snackBar: MatSnackBar) { }
 
   setLoading(isLoading: boolean) {

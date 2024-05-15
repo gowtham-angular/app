@@ -97,6 +97,8 @@ export class PlayComponent {
           count += element.price;
         });
         this.totalAmount =  (count * 1.5);
+        this.utilService.taskAmount.next(this.totalAmount);
+        this.utilService.taskCount.next(this.totalCount);
       }
     });
   }

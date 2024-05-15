@@ -13,7 +13,14 @@
         <app-cards *ngFor="let item of firstRow" [imageUrl]="item.img" [title]="item.title" [subtitle]="item.subTitle" [link]="item.link"> </app-cards>
     </div>
     <div class="container__card">
-        <app-banner [imageUrl]="banner.imageUrl" [title]="banner.title" [backgroundColor]="banner.backgroundColor"></app-banner>
+        <div class="dynamic-card" [style.background-color]="banner.backgroundColor">
+            <img [src]="banner.imageUrl" alt="Card Image" height="50px" width="50px" style="margin-right: 10px;" >
+            <div class="content">
+                <p style="margin-top: 10px; font-size: 14px; font-weight: bold; color: white;">Lucky Draw</p>
+                <span>Pay 1000 and get a chance to win iphone 15</span>
+            </div>
+           
+    </div>
     </div>
 
     <div class="container__secondRow">
