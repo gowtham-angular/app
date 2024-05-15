@@ -1,0 +1,67 @@
+.container{
+    display: flex;
+    margin: 10px;
+    padding: 10px;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    .title {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .image{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+ 
+    .product {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        p {
+            color: gray;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        h5 {
+            color: black;
+        }
+    }
+    .profit {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        p {
+            color: gray;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        h5 {
+            color: orangered;
+        }
+    }
+    .return {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+
+        p {
+            color: gray;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        h5 {
+            color: purple;
+        }
+    }
+}

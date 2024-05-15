@@ -4,6 +4,10 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UtilsService } from '../../service/utils.service';
 import { FirestoreService } from '../../service/firestore.service';
+import { Timestamp } from 'firebase/firestore';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { SpinnerDialogContentComponent } from '../spinner-dialog-content/spinner-dialog-content.component';
 
 @Component({
   selector: 'app-ranking',
@@ -16,7 +20,9 @@ export class RankingComponent {
   user: any;
 
   constructor(private userService: UserService, private auth: AngularFireAuth, private firestore: AngularFirestore,
-    private utilService: UtilsService, private firestoreService: FirestoreService) {
+    private utilService: UtilsService, private firestoreService: FirestoreService, private router: Router,
+    private dialog: MatDialog
+  ) {
     this.userService.getUserData().subscribe((users: any) => {
       this.getAuthenticatedUser(users);
     });
@@ -37,13 +43,29 @@ export class RankingComponent {
   }
 
   submitVipOne() {
-    let docData = { ...this.randomData, isSubmitted: true }
+    let docData = { ...this.randomData, isSubmitted: true, time: Timestamp.fromDate(new Date()) }
     let dataArray = [];
     dataArray.push(docData);
     console.log(this.randomData);
-   this.firestoreService.updateVipOneSubmittedData('vip_one_submitted', this.user.id, dataArray);
-   this.firestoreService.removeVipOneData('vip_one', this.user.id, this.randomData);
    
+    const dialogRef = this.dialog.open(SpinnerDialogContentComponent, {
+      disableClose: true // Prevent closing by clicking outside or pressing Escape
+    });
+
+    // Automatically close the dialog after 2 seconds
+    setTimeout(() => {
+      dialogRef.close({ manuallyClosed: false }); // Pass output indicating it was automatically closed
+      this.firestoreService.updateVipOneSubmittedData('vip_one_submitted', this.user.id, dataArray);
+      this.firestoreService.removeVipOneData('vip_one', this.user.id, this.randomData);
+      this.router.navigate(['/play'])
+    }, 2000);
+
+    // Subscribe to the dialog's afterClosed event
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed:', result);
+    });
   }
 
+
 }
+

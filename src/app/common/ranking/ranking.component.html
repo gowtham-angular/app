@@ -1,8 +1,29 @@
 <mat-card class="container">
-    <div>
-        <p>No : {{randomData?.id}}</p>
+    <div class="title">
+        <div >No : <span>{{randomData?.id | uppercase}}</span></div>
         <p>{{'payment pending'}}</p>
-
-        <button mat-raised-button color="primary" *ngIf="!randomData?.isSubmitted" (click) ="submitVipOne()"> Submit</button>
     </div>
-</mat-card> 
+    <div class="image" style="background-color: whitesmoke; padding: 5px; border-radius: 5px; margin: 10px;">
+        <img [src]="randomData?.url" height="50" width="50" />
+        <span style="margin-left: 10px;">{{randomData?.imageName}} X 1</span>
+    </div>
+    <div class="price_details">
+        <div class="product">
+            <p>Product price</p>
+            <div style="flex: 1"></div>
+            <h5>{{randomData?.price}}</h5>
+        </div>
+        <div class="profit">
+            <p>Profit</p>
+            <div style="flex: 1"></div>
+
+            <h5>{{randomData?.price * 0.05}}</h5>
+        </div>
+        <div class="return">
+            <p>Return</p>
+            <div style="flex: 1"></div>
+            <h5>{{randomData?.price * 1.05 }}</h5>
+        </div>
+    </div>
+    <button mat-raised-button color="primary" *ngIf="!randomData?.isSubmitted" (click)="submitVipOne()"> Submit</button>
+</mat-card>

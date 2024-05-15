@@ -41,6 +41,7 @@ import { BalanceCardComponent } from './common/balance-card/balance-card.compone
 import { DetailsDialogComponent } from './common/details-dialog/details-dialog.component';
 import { RankingComponent } from './common/ranking/ranking.component';
 import { SubmittedCardsComponent } from './common/submitted-cards/submitted-cards.component';
+import { SpinnerDialogContentComponent } from './common/spinner-dialog-content/spinner-dialog-content.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { SubmittedCardsComponent } from './common/submitted-cards/submitted-card
     BalanceCardComponent,
     DetailsDialogComponent,
     RankingComponent,
-    SubmittedCardsComponent
+    SubmittedCardsComponent,
+    SpinnerDialogContentComponent
   ],
   imports: [
     BrowserModule,

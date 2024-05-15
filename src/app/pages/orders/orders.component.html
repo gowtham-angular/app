@@ -14,18 +14,24 @@
     </div>
 
     <mat-tab-group>
-        <mat-tab label="Ranking Tasks">
+        <mat-tab label="Ranking Tasks" style="background-color: beige;">
 
             <app-ranking [randomData] ="randomData" [originalData]="originalData" ></app-ranking>
-            <app-submitted-cards *ngFor="let item of submittedData" [user] ="user" [submittedData]="item"></app-submitted-cards>
-            <app-nodata [imageUrl]="rankingTasks.imageUrl"
-                [title]="rankingTasks.title"></app-nodata>
+            <div  style="height: auto; overflow-y: scroll; min-height: 400px;">
+
+                <app-submitted-cards *ngFor="let item of submittedData" [user] ="user" [submittedData]="item"></app-submitted-cards>
+            </div>
+            <!-- <app-nodata [imageUrl]="rankingTasks.imageUrl"
+                [title]="rankingTasks.title"></app-nodata> -->
+                <div style="margin-bottom: 100px;"></div>
+                <app-tabs></app-tabs>
         </mat-tab>
         <mat-tab label="Reading">
             <app-nodata [imageUrl]="reading.imageUrl"
                 [title]="reading.title"></app-nodata>
         </mat-tab>
+        
     </mat-tab-group>
+  
 </div>
 
-<app-tabs></app-tabs>
