@@ -2,8 +2,8 @@
 <div class="background-container">
     <app-balance-card [user] = "user" [count] = "totalCount" [totalAmount] ="totalAmount"></app-balance-card>
 
-    <div class="start_button">
-        <button mat-raised-button color="warn" (click)="start()"> <mat-icon>play_circle</mat-icon> Account Start</button>
+    <div class="start_button" >
+        <button disabled="totalCount > 19" mat-raised-button color="warn" (click)="start()"> <mat-icon>play_circle</mat-icon> Account Start</button>
     </div>
 
     <div class="ranking_tasks">
