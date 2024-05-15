@@ -1,6 +1,6 @@
-<app-title-header title="Ranking Tasks"></app-title-header>
+<app-title-header title="Ranking Tasks" ></app-title-header>
 <div class="background-container">
-    <app-balance-card [user] = "user"></app-balance-card>
+    <app-balance-card [user] = "user" [count] = "totalCount" [totalAmount] ="totalAmount"></app-balance-card>
 
     <div class="start_button">
         <button mat-raised-button color="warn" (click)="start()"> <mat-icon>play_circle</mat-icon> Account Start</button>

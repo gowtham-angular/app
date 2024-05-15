@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UserService } from '../../service/user.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FirestoreService } from '../../service/firestore.service';
+import { UtilsService } from '../../service/utils.service';
 
 @Component({
   selector: 'app-orders',
@@ -17,13 +18,21 @@ export class OrdersComponent {
   randomData: any;
   originalData: any;
   submittedData: any;
+  isOrderSubmitted!: boolean;
+  ordersCount!: number;
 
   constructor(private firestore: AngularFirestore,
     private userService: UserService, private auth: AngularFireAuth,
-    private fireStoreService: FirestoreService) {
+    private fireStoreService: FirestoreService,
+    private utilService: UtilsService
+  ) {
 
     this.userService.getUserData().subscribe((users: any) => {
       this.getAuthenticatedUser(users);
+    });
+
+    this.utilService.isOrderSubmitted.subscribe((flag: boolean) => {
+      this.isOrderSubmitted = flag;
     });
   }
 
@@ -54,8 +63,11 @@ export class OrdersComponent {
   getSubmittedTasks(user: any) {
     this.fireStoreService.getData('vip_one_submitted', user.id).subscribe((data: any) => {
       this.submittedData = data.arrayField;
+      
     });
   }
+
+
 
 }
 

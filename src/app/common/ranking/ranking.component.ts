@@ -18,10 +18,11 @@ export class RankingComponent {
   @Input() randomData: any;
   @Input() originalData: any;
   user: any;
+  totalAmount!: number;
 
   constructor(private userService: UserService, private auth: AngularFireAuth, private firestore: AngularFirestore,
     private utilService: UtilsService, private firestoreService: FirestoreService, private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog, private fireStoreService: FirestoreService
   ) {
     this.userService.getUserData().subscribe((users: any) => {
       this.getAuthenticatedUser(users);
@@ -46,8 +47,7 @@ export class RankingComponent {
     let docData = { ...this.randomData, isSubmitted: true, time: Timestamp.fromDate(new Date()) }
     let dataArray = [];
     dataArray.push(docData);
-    console.log(this.randomData);
-   
+
     const dialogRef = this.dialog.open(SpinnerDialogContentComponent, {
       disableClose: true // Prevent closing by clicking outside or pressing Escape
     });
@@ -57,15 +57,16 @@ export class RankingComponent {
       dialogRef.close({ manuallyClosed: false }); // Pass output indicating it was automatically closed
       this.firestoreService.updateVipOneSubmittedData('vip_one_submitted', this.user.id, dataArray);
       this.firestoreService.removeVipOneData('vip_one', this.user.id, this.randomData);
-      this.router.navigate(['/play'])
+      this.router.navigate(['/play']);
+      this.utilService.isOrderSubmitted.next(false);
     }, 2000);
 
     // Subscribe to the dialog's afterClosed event
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog closed:', result);
     });
   }
 
 
+ 
 }
 

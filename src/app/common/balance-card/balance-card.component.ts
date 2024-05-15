@@ -7,4 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class BalanceCardComponent {
 @Input() user!: any;
+@Input() count!: any;
+@Input() totalAmount!: number;
+
 }

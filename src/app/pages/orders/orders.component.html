@@ -1,7 +1,7 @@
 <app-title-header title="Details"></app-title-header>
 <div class="background-container">
 
-    <div
+    <!-- <div
         style="padding: 10px; 
         display: flex; 
         flex-direction: row;
@@ -11,18 +11,17 @@
         <div style="color: black; font-weight: 700;">
             <p>Account Balance: ₹ {{user?.totalAmount}}</p>
         </div>
-    </div>
+    </div> -->
 
     <mat-tab-group>
         <mat-tab label="Ranking Tasks" style="background-color: beige;">
-
-            <app-ranking [randomData] ="randomData" [originalData]="originalData" ></app-ranking>
+            <app-ranking [randomData] ="randomData" [originalData]="originalData" *ngIf="user?.totalAmount > 10 && isOrderSubmitted" ></app-ranking>
             <div  style="height: auto; overflow-y: scroll; min-height: 400px;">
 
                 <app-submitted-cards *ngFor="let item of submittedData" [user] ="user" [submittedData]="item"></app-submitted-cards>
             </div>
             <!-- <app-nodata [imageUrl]="rankingTasks.imageUrl"
-                [title]="rankingTasks.title"></app-nodata> -->
+                [title]="rankingTasks.title" *ngIf="!originalData"></app-nodata> -->
                 <div style="margin-bottom: 100px;"></div>
                 <app-tabs></app-tabs>
         </mat-tab>
