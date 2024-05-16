@@ -5,7 +5,7 @@
     <mat-tab-group>
         <mat-tab label="Ranking Tasks" style="background-color: beige;">
             <app-ranking [randomData] ="vipOneRandomData" [originalData]="vipOneOriginalData" *ngIf="user?.totalAmount > 10 && isOrderSubmitted" ></app-ranking>
-            <app-ranking [randomData] ="vipTwoRandomData" [originalData]="vipTwoOriginalData" *ngIf="user?.totalAmount > 1500 && isVipTwoEnabled" ></app-ranking>
+            <app-ranking [randomData] ="vipTwoRandomData" [originalData]="vipTwoOriginalData" *ngIf="user?.totalAmount >= 1500 && isVipTwoEnabled" ></app-ranking>
             <div  style="height: auto; overflow-y: scroll; min-height: 400px;">
                 <app-submitted-cards *ngFor="let item of submittedVipTwoData" [user] ="user" [submittedData]="item"></app-submitted-cards>
                 <app-submitted-cards *ngFor="let item of submittedData" [user] ="user" [submittedData]="item"></app-submitted-cards>
