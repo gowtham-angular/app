@@ -11,16 +11,18 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 export class MissionCardComponent {
   @Input() user!: any;
   count!: number;
-  profit!: number;
+  prfit!: number;
+  isMissionComplete!: boolean;
   constructor(private utilService: UtilsService,
     private userService: UserService,
     private auth: AngularFireAuth
   ) {
-
-
-
     this.userService.getUserData().subscribe((users: any) => {
       this.getAuthenticatedUser(users);
+    })
+
+    this.utilService.isMissionComplete.subscribe((flag: boolean) => {
+      this.isMissionComplete = flag;
     })
   }
 
@@ -42,4 +44,6 @@ export class MissionCardComponent {
     } catch (error) {
     }
   }
+
+  
 }

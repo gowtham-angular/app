@@ -57,7 +57,7 @@ export class PlayComponent implements OnDestroy {
     if (this.user) {
       if (this.user.totalInvested >= 0) {
         this.isMissionComplete = true;
-
+        this.utilService.isMissionComplete.next(true);
         if (this.user?.totalAmount < 1500) {
           this.utilService.getSnackBar("Please Recharge Before Start the Day Two Tasks.");
         } else {
@@ -89,6 +89,7 @@ export class PlayComponent implements OnDestroy {
         }
       } else {
         this.isMissionComplete = false;
+        this.utilService.isMissionComplete.next(false);
         this.utilService.getSnackBar("Please complete the mission");
       }
 
@@ -155,6 +156,7 @@ export class PlayComponent implements OnDestroy {
         this.totalAmount = (count * 1.5);
         this.utilService.taskAmount.next(this.totalAmount);
         this.utilService.updateCount(this.user?.id, this.totalCount);
+        this.fireStoreService.updateProfit(this.user?.id, this.totalAmount)
 
       }
     });

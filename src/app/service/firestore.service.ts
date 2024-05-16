@@ -83,7 +83,13 @@ export class FirestoreService {
     const dataRef = this.firestore.collection(collectionName).doc(userId);
 
     dataRef.update({
-     arrayField: arrayRemove(data)
+      arrayField: arrayRemove(data)
     })
+  }
+
+  updateProfit(id: any, profit: any) {
+    this.firestore.collection('users').doc(id).update({
+      profit: profit
+    });
   }
 }

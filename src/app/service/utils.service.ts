@@ -15,6 +15,7 @@ export class UtilsService {
   amount = new BehaviorSubject(0);
   taskAmount = new BehaviorSubject(0);
   isVipTwoEnabled = new BehaviorSubject<boolean>(false);
+  isMissionComplete = new BehaviorSubject<boolean>(false);
 
   constructor(
     private snackBar: MatSnackBar,
