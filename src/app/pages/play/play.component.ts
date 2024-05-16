@@ -21,6 +21,9 @@ export class PlayComponent {
   submittedData: any;
   totalCount!: number;
   totalAmount!: number;
+  totalCountFlag!: boolean;
+  vipTwoFlag!: boolean;
+
   constructor(private _productService: ProductsService,
     private userService: UserService, private auth: AngularFireAuth, private utilService: UtilsService,
     public dialog: MatDialog, private fireStoreService: FirestoreService, private fireStore : AngularFirestore
@@ -43,6 +46,21 @@ export class PlayComponent {
         dialogRef.afterClosed().subscribe((result: any) => {
 
           this.utilService.isOrderSubmitted.next(true);
+        });
+      }
+    }
+  }
+
+  startVipTwo() {
+    if (this.user) {
+
+      if (this.user?.totalAmount < 1500) {
+        this.utilService.getSnackBar("Please Recharge Before Start the Day Two Tasks.");
+      } else {
+        const dialogRef = this.dialog.open(DetailsDialogComponent);
+
+        dialogRef.afterClosed().subscribe((result: any) => {
+          this.utilService.isVipTwoEnabled.next(true);
         });
       }
     }
@@ -91,6 +109,15 @@ export class PlayComponent {
       if (data) {
         this.submittedData = data.arrayField;
         this.totalCount = this.submittedData?.length;
+
+        if(this.totalCount > 19) {
+          this.totalCountFlag = true;
+          this.vipTwoFlag = true;
+
+        } else {
+          this.totalCountFlag = false;
+          this.vipTwoFlag = false;
+        }
         let count = 0;
 
         this.submittedData.forEach((element: any) => {
@@ -98,7 +125,8 @@ export class PlayComponent {
         });
         this.totalAmount =  (count * 1.5);
         this.utilService.taskAmount.next(this.totalAmount);
-        this.utilService.taskCount.next(this.totalCount);
+        this.utilService.updateCount(this.user?.id, this.totalCount);
+
       }
     });
   }

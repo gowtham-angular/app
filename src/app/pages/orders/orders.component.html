@@ -1,27 +1,17 @@
 <app-title-header title="Details"></app-title-header>
 <div class="background-container">
 
-    <!-- <div
-        style="padding: 10px; 
-        display: flex; 
-        flex-direction: row;
-         justify-content: space-between;
-         border-bottom: 2px solid rgb(68, 83, 167)">
-        <h5 style="color: gray;">Data provided by the system</h5>
-        <div style="color: black; font-weight: 700;">
-            <p>Account Balance: ₹ {{user?.totalAmount}}</p>
-        </div>
-    </div> -->
 
     <mat-tab-group>
         <mat-tab label="Ranking Tasks" style="background-color: beige;">
-            <app-ranking [randomData] ="randomData" [originalData]="originalData" *ngIf="user?.totalAmount > 10 && isOrderSubmitted" ></app-ranking>
+            <app-ranking [randomData] ="vipOneRandomData" [originalData]="vipOneOriginalData" *ngIf="user?.totalAmount > 10 && isOrderSubmitted" ></app-ranking>
+            <app-ranking [randomData] ="vipTwoRandomData" [originalData]="vipTwoOriginalData" *ngIf="user?.totalAmount > 1500 && isVipTwoEnabled" ></app-ranking>
             <div  style="height: auto; overflow-y: scroll; min-height: 400px;">
-
+                <app-submitted-cards *ngFor="let item of submittedVipTwoData" [user] ="user" [submittedData]="item"></app-submitted-cards>
                 <app-submitted-cards *ngFor="let item of submittedData" [user] ="user" [submittedData]="item"></app-submitted-cards>
             </div>
             <!-- <app-nodata [imageUrl]="rankingTasks.imageUrl"
-                [title]="rankingTasks.title" *ngIf="!originalData"></app-nodata> -->
+                [title]="rankingTasks.title" *ngIf="!originalData"></app-nodata> --> 
                 <div style="margin-bottom: 100px;"></div>
                 <app-tabs></app-tabs>
         </mat-tab>

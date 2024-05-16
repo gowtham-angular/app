@@ -15,10 +15,16 @@ export class OrdersComponent {
   rankingTasks = { imageUrl: '../../../assets/reading.png', title: 'No Ranking Tasks Available' };
   reading = { imageUrl: '../../../assets/reading.png', title: 'No Reading Tasks Available' };
   user: any;
-  randomData: any;
-  originalData: any;
+  vipOneRandomData: any;
+  vipOneOriginalData:
+    any;
+  vipTwoRandomData: any;
+  vipTwoOriginalData:
+    any;
   submittedData: any;
+  submittedVipTwoData: any;
   isOrderSubmitted!: boolean;
+  isVipTwoEnabled!: boolean;
   ordersCount!: number;
 
   constructor(private firestore: AngularFirestore,
@@ -34,6 +40,12 @@ export class OrdersComponent {
     this.utilService.isOrderSubmitted.subscribe((flag: boolean) => {
       this.isOrderSubmitted = flag;
     });
+
+    this.utilService.taskCount.subscribe((count: number) => {
+      this.ordersCount = count;
+    })
+
+   
   }
 
 
@@ -44,7 +56,13 @@ export class OrdersComponent {
           const email = user.email;
           const filteredUser = this.userService.filterUsersByEmail(users, email);
           this.user = filteredUser[0];
-          this.getTasks(this.user);
+          this.getVipOneTasks(this.user, 'vip_one');
+          this.utilService.isVipTwoEnabled.subscribe((flag: boolean) => {
+            this.isVipTwoEnabled = flag;
+            if (flag) {
+              this.getVipTwoTasks('vip_two');
+            }
+          });
         }
       });
 
@@ -52,22 +70,36 @@ export class OrdersComponent {
     }
   }
 
-  getTasks(user: any) {
-    this.fireStoreService.getData('vip_one', user.id).subscribe((data: any) => {
-      this.randomData = this.fireStoreService.selectRandomItem(data.arrayField);
-      this.originalData = this.fireStoreService.removeSelectedItem(data.arrayField, this.randomData);
+  getVipOneTasks(user: any, collectionName: string) {
+    this.fireStoreService.getData(collectionName, user?.id).subscribe((data: any) => {
+      this.vipOneRandomData = this.fireStoreService.selectRandomItem(data.arrayField);
+      this.vipOneOriginalData = this.fireStoreService.removeSelectedItem(data.arrayField, this.vipOneRandomData);
       this.getSubmittedTasks(user);
+
     });
   }
+
+  getVipTwoTasks(collectionName: string) {
+    this.fireStoreService.getData(collectionName, this.user?.id).subscribe((data: any) => {
+      this.vipTwoRandomData = this.fireStoreService.selectRandomItem(data.arrayField);
+      this.vipTwoOriginalData = this.fireStoreService.removeSelectedItem(data.arrayField, this.vipTwoRandomData);
+      this.getSubmittedVipTwoTasks(this.user);
+    });
+  }
+
 
   getSubmittedTasks(user: any) {
     this.fireStoreService.getData('vip_one_submitted', user.id).subscribe((data: any) => {
       this.submittedData = data.arrayField;
-      
     });
   }
 
 
+  getSubmittedVipTwoTasks(user: any) {
+    this.fireStoreService.getData('vip_two_submitted', user.id).subscribe((data: any) => {
+      this.submittedVipTwoData = data.arrayField;
+    });
+  }
 
 }
 

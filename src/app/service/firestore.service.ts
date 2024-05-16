@@ -49,7 +49,7 @@ export class FirestoreService {
     return this.firestore.collection(collectionName).doc(documentId).update({ dataArray });
   }
 
-  createVipOneSubmittedCollection(collectionName: string, userId: any) {
+  createSubmittedCollection(collectionName: string, userId: any) {
     const userRef = this.firestore.collection(collectionName).doc(userId);
 
     // Initial array to store in Firestore
@@ -66,9 +66,9 @@ export class FirestoreService {
       });
   }
 
-  updateVipOneSubmittedData(collectionName: string, userId: any, newValues: any) {
-    const userRef = this.firestore.collection(collectionName).doc(userId);
-    userRef.update({
+  updateSubmittedData(collectionName: string, userId: any, newValues: any) {
+    const dataRef = this.firestore.collection(collectionName).doc(userId);
+    dataRef.update({
       arrayField: arrayUnion(newValues[0])
     })
       .then(() => {
@@ -79,10 +79,10 @@ export class FirestoreService {
       });
   }
 
-  removeVipOneData(collectionName: string, userId: any, data: any) {
-    const vipOneRef = this.firestore.collection(collectionName).doc(userId);
+  removeData(collectionName: string, userId: any, data: any) {
+    const dataRef = this.firestore.collection(collectionName).doc(userId);
 
-    vipOneRef.update({
+    dataRef.update({
      arrayField: arrayRemove(data)
     })
   }

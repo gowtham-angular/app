@@ -21,10 +21,14 @@ export class UserService {
   lastGeneratedId!: number;
   users!: any[];
   products!: any[];
-  constructor(private auth: AngularFireAuth, private utilService: UtilsService,
-    private firestore: AngularFirestore, private _router: Router,
+  
+  constructor(
+    private auth: AngularFireAuth, 
+    private firestore: AngularFirestore, 
+    private router: Router,
+    private _utilService: UtilsService,
     private _productService: ProductsService,
-    private fireStoreService: FirestoreService) {
+    private _fireStoreService: FirestoreService) {
 
     // Fetch the last generated ID from Firestore
     this.firestore.collection('id').doc('lastId').valueChanges().subscribe((data: any) => {
@@ -37,12 +41,11 @@ export class UserService {
     try {
       const id = this.generateUniqueId();
       await this.auth.createUserWithEmailAndPassword(userData.email, userData.password);
-      this.utilService.getSnackBar('User Created Successfully!!!');
-
+      this._utilService.getSnackBar('User Created Successfully!!!');
       this.createDefaultUser(id, userData);
     }
     catch (error: any) {
-      this.utilService.getSnackBar(error);
+      this._utilService.getSnackBar(error);
     }
   }
 
@@ -60,64 +63,74 @@ export class UserService {
       ...defaultValues
     }
 
-    this.firestore.collection('users').doc(id).set(docData)// Add user data to collection
+    this.firestore.collection('users').doc(id).set(docData)
       .then(() => {
         this.updateLastGeneratedId(id);
-        this.utilService.getSnackBar('User Registered with ID Successfully!!!');
-        this.getProducts(id);
-
-
+        this._utilService.getSnackBar('User Registered with ID Successfully!!!');
+        this.getProducts(id, 'vip_one');
+        this.getProducts(id, 'vip_two');
       })
       .catch(error => {
         console.error('Error adding user:', error);
       });
   }
 
-  assignVipOneData(id: any) {
 
-    let docData = this.products;
-    this.firestore.collection('vip_one').doc(id).update({ arrayField: docData })// Add user data to collection
+
+  assignVipData(id: any, collectionName: string, products: any) {
+    console.log("products", products);
+    let docData = products;
+    let submittedCollection  = `${collectionName}_submitted`
+    this.firestore.collection(collectionName).doc(id).update({ arrayField: docData })// Add user data to collection
       .then(() => {
-        this.fireStoreService.createVipOneSubmittedCollection('vip_one_submitted', id);
+        this._fireStoreService.createSubmittedCollection(submittedCollection, id);
       })
       .catch(error => {
         console.error('Error adding user:', error);
       });
   }
 
-  getProducts(id: any) {
+
+  getProducts(id: any, collectionName: string) {
+    let products = [];
     this._productService.getAllProducts().subscribe((data: any) => {
       if (data) {
         let newArray = data.map((obj: any) => ({
           ...obj,
           isSubmitted: false
         }));
-        this.products = newArray.filter((item: any) => item.level === 'vip_1');
-        this.fireStoreService.createVipOneSubmittedCollection('vip_one', id);
-        this.assignVipOneData(id);
+       
+        let level = '';
+        if(collectionName === "vip_one"){
+          level = "vip_1";
+        }else if(collectionName == "vip_two") {
+          level = "vip_2";
+        }
+        products= newArray.filter((item: any) => item.level === level);
+        this._fireStoreService.createSubmittedCollection(collectionName, id);
+        this.assignVipData(id, collectionName, products);
       }
     })
   }
-
   async signIntoFirebase(userData: any) {
     try {
       await this.auth.signInWithEmailAndPassword(userData.email, userData.password);
-      this.utilService.getSnackBar('User Logged In Successfully!!!');
-      this._router.navigate(['/home']);
+      this._utilService.getSnackBar('User Logged In Successfully!!!');
+      this.router.navigate(['/home']);
     }
     catch (error: any) {
-      this.utilService.getSnackBar(error);
+      this._utilService.getSnackBar(error);
     }
   }
 
   async signout() {
     try {
       await this.auth.signOut();
-      this.utilService.getSnackBar('User Signed Out');
-      this._router.navigate(['/signin'])
+      this._utilService.getSnackBar('User Signed Out');
+      this.router.navigate(['/signin'])
     }
     catch (error: any) {
-      this.utilService.getSnackBar(error);
+      this._utilService.getSnackBar(error);
     }
   }
 
@@ -154,13 +167,14 @@ export class UserService {
   updateLastGeneratedId(id: string) {
     // Update the last generated ID in Firestore
     this.firestore.collection('id').doc('lastId').set({ lastId: parseInt(id, 10) });
+    this.registerTaskCount(id)
   }
 
   submitBankDetails(formData: any, id: any) {
     this.firestore.collection('bankAccounts').doc(id).set(formData)// Add user data to collection
       .then(() => {
         this.updateLastGeneratedId(id);
-        this.utilService.getSnackBar('Bank Details Saved Successfully!!!');
+        this._utilService.getSnackBar('Bank Details Saved Successfully!!!');
 
       })
       .catch(error => {
@@ -172,5 +186,7 @@ export class UserService {
     return this.firestore.collection('bankAccounts').doc(id).valueChanges();
   }
 
-
+  registerTaskCount(id: any) {
+    this._utilService.registerCount(id);
+  }
 }

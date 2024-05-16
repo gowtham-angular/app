@@ -55,8 +55,8 @@ export class RankingComponent {
     // Automatically close the dialog after 2 seconds
     setTimeout(() => {
       dialogRef.close({ manuallyClosed: false }); // Pass output indicating it was automatically closed
-      this.firestoreService.updateVipOneSubmittedData('vip_one_submitted', this.user.id, dataArray);
-      this.firestoreService.removeVipOneData('vip_one', this.user.id, this.randomData);
+      this.firestoreService.updateSubmittedData('vip_one_submitted', this.user.id, dataArray);
+      this.firestoreService.removeData('vip_one', this.user.id, this.randomData);
       this.router.navigate(['/play']);
       this.utilService.isOrderSubmitted.next(false);
     }, 2000);
