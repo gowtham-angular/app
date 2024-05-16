@@ -26,8 +26,6 @@ export class AccountsComponent {
           const filteredUser = this.userService.filterUsersByEmail(users, email);
           this.user = filteredUser[0];
           this.utilService.amount.next(this.user?.totalAmount);
-
-          
         }
       });
 
