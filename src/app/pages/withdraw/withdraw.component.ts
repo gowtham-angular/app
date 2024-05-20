@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../service/user.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { take } from 'rxjs';
 @Component({
   selector: 'app-withdraw',
   templateUrl: './withdraw.component.html',
@@ -20,7 +21,7 @@ export class WithdrawComponent {
       upiId: ['', Validators.required],
     });
 
-    this.userService.getUserData().subscribe((users: any) => {
+    this.userService.getUserData().pipe(take(1)).subscribe((users: any) => {
       this.getAuthenticatedUser(users);
     });
 

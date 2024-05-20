@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserService } from '../../service/user.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UtilsService } from '../../service/utils.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-accounts',
@@ -12,7 +13,7 @@ export class AccountsComponent {
   user: any;
   constructor( private userService: UserService, private auth: AngularFireAuth, private utilService: UtilsService) {
 
-    this.userService.getUserData().subscribe((users: any) => {
+    this.userService.getUserData().pipe(take(1)).subscribe((users: any) => {
       this.getAuthenticatedUser(users);
     });
   }

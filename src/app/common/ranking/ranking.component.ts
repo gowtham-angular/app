@@ -8,6 +8,7 @@ import { Timestamp } from 'firebase/firestore';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { SpinnerDialogContentComponent } from '../spinner-dialog-content/spinner-dialog-content.component';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-ranking',
@@ -19,13 +20,17 @@ export class RankingComponent {
   @Input() originalData: any;
   user: any;
   totalAmount!: number;
-
+  isMissionComplete!: boolean;
   constructor(private userService: UserService, private auth: AngularFireAuth, private firestore: AngularFirestore,
     private utilService: UtilsService, private firestoreService: FirestoreService, private router: Router,
     private dialog: MatDialog, private fireStoreService: FirestoreService
   ) {
-    this.userService.getUserData().subscribe((users: any) => {
+    this.userService.getUserData().pipe(take(1)).subscribe((users: any) => {
       this.getAuthenticatedUser(users);
+    });
+
+    this.utilService.isMissionComplete.subscribe((flag: boolean) => {
+      this.isMissionComplete = flag;
     });
   }
 

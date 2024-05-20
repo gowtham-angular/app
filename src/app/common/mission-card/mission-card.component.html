@@ -1,6 +1,6 @@
 <div class="mission-card mat-elevation-z4">
     <div class="mission-content">
-        <p class="balance">Mission in progress</p>
+        <p class="balance">Mission in progress</p> {{isMissionComplete}}
         <p *ngIf="isMissionComplete" class="mission"> ₹ {{user?.totalInvested}}</p>
         <p *ngIf="!isMissionComplete" class="mission"> ₹ {{user?.totalAmount + user?.profit}}</p>
         <h5 class="">Completed quantity: {{count}}</h5>

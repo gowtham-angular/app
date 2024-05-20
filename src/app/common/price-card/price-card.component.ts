@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { UtilsService } from '../../service/utils.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-price-card',

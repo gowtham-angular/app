@@ -7,7 +7,7 @@ import { DetailsDialogComponent } from '../../common/details-dialog/details-dial
 import { MatDialog } from '@angular/material/dialog';
 import { FirestoreService } from '../../service/firestore.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 
 @Component({
@@ -15,7 +15,7 @@ import { take } from 'rxjs';
   templateUrl: './play.component.html',
   styleUrl: './play.component.scss'
 })
-export class PlayComponent implements OnDestroy {
+export class PlayComponent {
 
   products: any;
   user: any;
@@ -26,23 +26,69 @@ export class PlayComponent implements OnDestroy {
   vipTwoFlag!: boolean;
   isMissionComplete!: boolean;
 
-  constructor(private _productService: ProductsService,
-    private userService: UserService, private auth: AngularFireAuth, private utilService: UtilsService,
-    public dialog: MatDialog, private fireStoreService: FirestoreService, private fireStore: AngularFirestore
+
+  constructor(
+    private fireStore: AngularFirestore,
+    private auth: AngularFireAuth,
+    public dialog: MatDialog,
+    private userService: UserService,
+    private utilService: UtilsService,
+    private fireStoreService: FirestoreService,
+    private productService: ProductsService,
   ) {
     this.getProducts();
-    this.userService.getUserData().subscribe((users: any) => {
+    this.userService.getUserData().pipe(take(1)).subscribe((users: any) => {
       this.getAuthenticatedUser(users);
+    });
+  }
+
+  getAuthenticatedUser(users: any) {
+    this.auth.user.subscribe((user: any) => {
+      if (user) {
+        const email = user.email;
+        const filteredUser = this.userService.filterUsersByEmail(users, email);
+        this.user = filteredUser[0];
+      }
+    });
+    setTimeout(() => {
+      this.getSubmittedTasks(this.user);
+    }, 1000)
+
+  }
+
+  getSubmittedTasks(user: any) {
+    this.fireStoreService.getData('vip_one_submitted', user.id).subscribe((data: any) => {
+      if (data) {
+        this.submittedData = data.arrayField;
+        this.totalCount = this.submittedData?.length;
+
+        if (this.totalCount > 19 && this.totalCount <= 39) {
+          this.totalCountFlag = true;
+          this.vipTwoFlag = true;
+        } else if (this.totalCount > 39) {
+          this.totalCountFlag = true;
+          this.vipTwoFlag = false;
+        } else {
+          this.vipTwoFlag = false;
+        }
+        let count = 0;
+
+        this.submittedData.forEach((element: any) => {
+          count += element.price;
+        });
+        this.totalAmount = (count * 1.5);
+        this.utilService.taskAmount.next(this.totalAmount);
+        this.utilService.updateCount(this.user?.id, this.totalCount);
+        this.fireStoreService.updateProfit(this.user?.id, this.totalAmount)
+      }
     });
   }
 
   start() {
     if (this.user) {
-
       if (this.user?.totalAmount < 1) {
         this.utilService.getSnackBar("Please Recharge before start the tasks.")
       } else {
-
         const dialogRef = this.dialog.open(DetailsDialogComponent);
         dialogRef.afterClosed().subscribe((result: any) => {
           this.utilService.isOrderSubmitted.next(true);
@@ -53,51 +99,48 @@ export class PlayComponent implements OnDestroy {
   }
 
   startVipTwo() {
-
     if (this.user) {
       if (this.user.totalInvested >= 0) {
         this.isMissionComplete = true;
-        this.utilService.isMissionComplete.next(true);
+        this.utilService.isMissionComplete.next(false);
         if (this.user?.totalAmount < 1500) {
           this.utilService.getSnackBar("Please Recharge Before Start the Day Two Tasks.");
         } else {
-
-          this.utilService.getCount(this.user?.id).pipe(take(1)).subscribe((data: any) => {
+          this.utilService.getCount(this.user?.id).subscribe((data: any) => {
             if (data) {
               let count = data.count;
-
-              if (count === 38) {
+              if (count === 37) {
                 this.fireStore.collection('users').doc(this.user.id).update({
                   totalInvested: -1555
                 })
               }
-
-              if (count === 40) {
+              if (count === 39) {
                 this.fireStore.collection('users').doc(this.user.id).update({
                   totalInvested: -555
                 })
               }
+
             }
 
           })
-
           const dialogRef = this.dialog.open(DetailsDialogComponent);
-
           dialogRef.afterClosed().subscribe((result: any) => {
             this.utilService.isVipTwoEnabled.next(true);
           });
         }
       } else {
         this.isMissionComplete = false;
-        this.utilService.isMissionComplete.next(false);
-        this.utilService.getSnackBar("Please complete the mission");
+        this.utilService.isMissionComplete.next(true);
+        const dialogRef = this.dialog.open(DetailsDialogComponent);
+        dialogRef.afterClosed().subscribe((result: any) => {
+          this.utilService.isVipTwoEnabled.next(true);
+        });
       }
-
     }
   }
 
   getProducts() {
-    this._productService.getAllProducts().subscribe((data: any) => {
+    this.productService.getAllProducts().subscribe((data: any) => {
       if (data) {
         let tempProducts = data.filter((item: any) => item.level === 'products');
         this.products = this.chooseRandomTwo(tempProducts);
@@ -116,55 +159,6 @@ export class PlayComponent implements OnDestroy {
     return [array[randomIndexes[0]], array[randomIndexes[1]]];
   }
 
-  getAuthenticatedUser(users: any) {
-    try {
-      this.auth.user.subscribe((user: any) => {
-        if (user) {
-          const email = user.email;
-          const filteredUser = this.userService.filterUsersByEmail(users, email);
-          this.user = filteredUser[0];
-
-          this.getSubmittedTasks(this.user)
-        }
-      });
-
-    } catch (error) {
-
-    }
-
-  }
-
-  getSubmittedTasks(user: any) {
-    this.fireStoreService.getData('vip_one_submitted', user.id).subscribe((data: any) => {
-      if (data) {
-        this.submittedData = data.arrayField;
-        this.totalCount = this.submittedData?.length;
-
-        if (this.totalCount > 19) {
-          this.totalCountFlag = true;
-          this.vipTwoFlag = true;
-
-        } else {
-          this.totalCountFlag = false;
-          this.vipTwoFlag = false;
-        }
-        let count = 0;
-
-        this.submittedData.forEach((element: any) => {
-          count += element.price;
-        });
-        this.totalAmount = (count * 1.5);
-        this.utilService.taskAmount.next(this.totalAmount);
-        this.utilService.updateCount(this.user?.id, this.totalCount);
-        this.fireStoreService.updateProfit(this.user?.id, this.totalAmount)
-
-      }
-    });
-  }
-
-  ngOnDestroy() {
-
-  }
 }
 
 

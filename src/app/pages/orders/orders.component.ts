@@ -4,6 +4,8 @@ import { UserService } from '../../service/user.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FirestoreService } from '../../service/firestore.service';
 import { UtilsService } from '../../service/utils.service';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { Observable, finalize, take } from 'rxjs';
 
 @Component({
   selector: 'app-orders',
@@ -16,28 +18,32 @@ export class OrdersComponent {
   reading = { imageUrl: '../../../assets/reading.png', title: 'No Reading Tasks Available' };
   user: any;
   vipOneRandomData: any;
-  vipOneOriginalData:
-    any;
+  vipOneOriginalData: any;
   vipTwoRandomData: any;
-  vipTwoOriginalData:
-    any;
+  vipTwoOriginalData: any;
   submittedData: any;
   submittedVipTwoData: any;
   isOrderSubmitted!: boolean;
   isVipTwoEnabled!: boolean;
   ordersCount!: number;
-
-  constructor(private firestore: AngularFirestore,
+  selectedFile!: File;
+  uploading: boolean = false;
+  fileName: string = '';
+  uploadProgress: Observable<number | undefined> | undefined;
+  constructor(
+    private storage: AngularFireStorage,
+    private firestore: AngularFirestore,
     private userService: UserService, private auth: AngularFireAuth,
     private fireStoreService: FirestoreService,
     private utilService: UtilsService
   ) {
 
-    this.userService.getUserData().subscribe((users: any) => {
+    this.userService.getUserData().pipe(take(1)).subscribe((users: any) => {
       this.getAuthenticatedUser(users);
     });
 
     this.utilService.isOrderSubmitted.subscribe((flag: boolean) => {
+      console.log(flag);
       this.isOrderSubmitted = flag;
     });
 
@@ -45,9 +51,42 @@ export class OrdersComponent {
       this.ordersCount = count;
     })
 
-   
   }
 
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.fileName = file.name;
+
+      const filePath = `uploads/${file.name}`;
+      const fileRef = this.storage.ref(filePath);
+      const task = this.storage.upload(filePath, file);
+
+      // Observe percentage changes
+      this.uploadProgress = task.percentageChanges();
+
+      // Get notified when the download URL is available
+      task.snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe(downloadURL => {
+            this.fireStoreService.addReadingData(this.user?.id, downloadURL)
+              .then(() => {
+                this.utilService.getSnackBar('Reading File added successfully.');
+                
+              })
+              .catch((error: any) => {
+                this.utilService.getSnackBar('Error adding product.');
+                console.error('Error adding product:', error);
+              }).finally(() => {
+                this.uploading = false;
+              });
+          });
+        })
+      ).subscribe();
+    }
+  }
 
   getAuthenticatedUser(users: any) {
     try {

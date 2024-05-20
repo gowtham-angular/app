@@ -3,10 +3,10 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UtilsService } from './utils.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
 import { ProductsService } from './products.service';
 import { FirestoreService } from './firestore.service';
+import { Observable, of } from 'rxjs';
 
 interface User {
   userName: string,
@@ -14,6 +14,8 @@ interface User {
   password: string,
   referralId: string,
 }
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,10 +23,10 @@ export class UserService {
   lastGeneratedId!: number;
   users!: any[];
   products!: any[];
-  
+  user$: Observable<any>
   constructor(
-    private auth: AngularFireAuth, 
-    private firestore: AngularFirestore, 
+    private auth: AngularFireAuth,
+    private firestore: AngularFirestore,
     private router: Router,
     private _utilService: UtilsService,
     private _productService: ProductsService,
@@ -35,7 +37,28 @@ export class UserService {
       this.lastGeneratedId = data.lastId;
     });
 
+    this.user$ = this.auth.authState.pipe(
+      switchMap(user => {
+        if (user) {
+          return this.firestore.doc<User>(`users/${user.uid}`).valueChanges();
+        } else {
+          return of(null);
+        }
+      })
+    );
   }
+
+  //  // Save user data to Firestore on signup
+  //  async createUserData(user: firebase.User) {
+  //   const userRef = this.afs.doc(`users/${user.uid}`);
+  //   const data: User = {
+  //     uid: user.uid,
+  //     email: user.email,
+  //     displayName: user.displayName || '',
+  //     // Add other user fields as needed
+  //   };
+  //   return userRef.set(data, { merge: true });
+  // }
 
   async signUptoFirebase(userData: User) {
     try {
@@ -80,7 +103,7 @@ export class UserService {
   assignVipData(id: any, collectionName: string, products: any) {
     console.log("products", products);
     let docData = products;
-    let submittedCollection  = `${collectionName}_submitted`
+    let submittedCollection = `${collectionName}_submitted`
     this.firestore.collection(collectionName).doc(id).update({ arrayField: docData })// Add user data to collection
       .then(() => {
         this._fireStoreService.createSubmittedCollection(submittedCollection, id);
@@ -99,14 +122,14 @@ export class UserService {
           ...obj,
           isSubmitted: false
         }));
-       
+
         let level = '';
-        if(collectionName === "vip_one"){
+        if (collectionName === "vip_one") {
           level = "vip_1";
-        }else if(collectionName == "vip_two") {
+        } else if (collectionName == "vip_two") {
           level = "vip_2";
         }
-        products= newArray.filter((item: any) => item.level === level);
+        products = newArray.filter((item: any) => item.level === level);
         this._fireStoreService.createSubmittedCollection(collectionName, id);
         this.assignVipData(id, collectionName, products);
       }
@@ -145,9 +168,6 @@ export class UserService {
     );
   }
 
-  filterUsersByEmail(users: any, email: string): any {
-    return users.filter((user: any) => user.email === email);
-  }
   generateUniqueId(): string {
     let newId = this.lastGeneratedId + 1;
     while (this.checkIfIdExists(newId)) {
@@ -188,5 +208,9 @@ export class UserService {
 
   registerTaskCount(id: any) {
     this._utilService.registerCount(id);
+  }
+
+  filterUsersByEmail(users: any, email: string): any {
+    return users.filter((user: any) => user.email === email);
   }
 }

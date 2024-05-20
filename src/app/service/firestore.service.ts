@@ -92,4 +92,11 @@ export class FirestoreService {
       profit: profit
     });
   }
+
+  addReadingData(id: any, downloadURL: string) {
+    return this.firestore.collection('readingData').add({
+      userId: id,
+      url: downloadURL
+    });
+  }
 }

@@ -1,6 +1,33 @@
 .background-container {
-    min-height: 200px;
-    height: 100vh;
-    background-color: beige;
+  min-height: 200px;
+  height: 100vh;
+  background-color: beige;
 }
 
+.file-upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  button {
+    margin: 20px 0;
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+  }
+}
+
+.progress_bar {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  text-align: center;
+
+}

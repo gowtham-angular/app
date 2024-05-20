@@ -4,23 +4,31 @@
 
     <mat-tab-group>
         <mat-tab label="Ranking Tasks" style="background-color: beige;">
-            <app-ranking [randomData] ="vipOneRandomData" [originalData]="vipOneOriginalData" *ngIf="user?.totalAmount > 10 && isOrderSubmitted" ></app-ranking>
-            <app-ranking [randomData] ="vipTwoRandomData" [originalData]="vipTwoOriginalData" *ngIf="user?.totalAmount >= 1500 && isVipTwoEnabled" ></app-ranking>
-            <div  style="height: auto; overflow-y: scroll; min-height: 400px;">
-                <app-submitted-cards *ngFor="let item of submittedVipTwoData" [user] ="user" [submittedData]="item"></app-submitted-cards>
-                <app-submitted-cards *ngFor="let item of submittedData" [user] ="user" [submittedData]="item"></app-submitted-cards>
+            <app-ranking [randomData]="vipOneRandomData" [originalData]="vipOneOriginalData" *ngIf="(user?.totalAmount > 10 &&  user?.totalAmount < 1500) && isOrderSubmitted"></app-ranking>
+            <app-ranking [randomData]="vipTwoRandomData" [originalData]="vipTwoOriginalData" *ngIf="user?.totalAmount >= 1500 && isVipTwoEnabled"></app-ranking>
+            <div style="height: auto; overflow-y: scroll; min-height: 400px;">
+                <app-submitted-cards *ngFor="let item of submittedVipTwoData" [user]="user" [submittedData]="item"></app-submitted-cards>
+                <app-submitted-cards *ngFor="let item of submittedData" [user]="user" [submittedData]="item"></app-submitted-cards>
             </div>
-            <!-- <app-nodata [imageUrl]="rankingTasks.imageUrl"
-                [title]="rankingTasks.title" *ngIf="!originalData"></app-nodata> --> 
-                <div style="margin-bottom: 100px;"></div>
-                <app-tabs></app-tabs>
+
+            <div style="margin-bottom: 100px;"></div>
+            <app-tabs></app-tabs>
         </mat-tab>
         <mat-tab label="Reading">
-            <app-nodata [imageUrl]="reading.imageUrl"
-                [title]="reading.title"></app-nodata>
-        </mat-tab>
-        
-    </mat-tab-group>
-  
-</div>
 
+            <div class="file-upload-container">
+                <button mat-raised-button color="primary" (click)="fileInput.click()">Upload File</button>
+                <input type="file" #fileInput (change)="onFileSelected($event)" hidden>
+            </div>
+            <div class="progress_bar">
+                <p *ngIf="uploadProgress | async as progress">{{ progress }}%</p>
+                <mat-progress-bar *ngIf="uploadProgress | async as progress" mode="determinate" [value]="progress"></mat-progress-bar>
+            </div>
+            <!-- <app-nodata [imageUrl]="reading.imageUrl"
+                [title]="reading.title"></app-nodata> -->
+            <app-tabs></app-tabs>
+        </mat-tab>
+
+    </mat-tab-group>
+
+</div>

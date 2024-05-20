@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { UtilsService } from '../../service/utils.service';
 import { UserService } from '../../service/user.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-profile-card',
@@ -16,7 +17,7 @@ export class ProfileCardComponent {
     private userService: UserService,
     private auth: AngularFireAuth
   ) {
-    this.userService.getUserData().subscribe((users: any) => {
+    this.userService.getUserData().pipe(take(1)).subscribe((users: any) => {
       this.getAuthenticatedUser(users);
     })
   }

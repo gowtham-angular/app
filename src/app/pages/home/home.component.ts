@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ProductsService } from '../../service/products.service';
+import { Observable, take } from 'rxjs';
+import { UserService } from '../../service/user.service';
 
 @Component({
   selector: 'app-home',
@@ -7,7 +9,6 @@ import { ProductsService } from '../../service/products.service';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-
   firstRow: any = [];
   secondRow: any = [];
   products: any = [];
@@ -22,6 +23,7 @@ export class HomeComponent {
 
 
   constructor(private _productService: ProductsService) {
+
     this.firstRow = [
       {
         img: '../../../assets/faq-chat.png',
