@@ -32,6 +32,10 @@
                     <mat-label>UPID</mat-label>
                     <input matInput formControlName="upiId" placeholder="Enter Upi ID">
                 </mat-form-field>
+                <mat-form-field class="form-field">
+                    <mat-label>Withdrawal Password</mat-label>
+                    <input matInput formControlName="wPassword" placeholder="Enter Upi ID">
+                </mat-form-field>
 
                 <button mat-raised-button color="primary" type="submit">Submit</button>
             </form>
@@ -44,5 +48,6 @@
         <p><strong>Bank Name: </strong>{{bankData.bank}}</p>
         <p><strong>IFSC:</strong>{{bankData.ifsc}}</p>
         <p><strong>UPI ID:</strong> {{bankData.upiId}}</p>
+        <!-- <p><strong>Password:</strong> {{bankData.wPassword}}</p> -->
     </mat-card>
 </div>

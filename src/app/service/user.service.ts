@@ -213,4 +213,17 @@ export class UserService {
   filterUsersByEmail(users: any, email: string): any {
     return users.filter((user: any) => user.email === email);
   }
+
+  submitWithdrawalDetails(formData: any, id: any) {
+    this.firestore.collection('submitWithdrawal').doc(id).set(formData)// Add user data to collection
+      .then(() => {
+        // this.updateLastGeneratedId(id);
+        this._utilService.getSnackBar('Withdrawal Processed Sucsessfully!!!');
+        this.router.navigate(['/accounts']);
+
+      })
+      .catch(error => {
+        console.error('Error adding user:', error);
+      });
+  }
 }

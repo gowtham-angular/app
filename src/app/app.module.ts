@@ -42,6 +42,7 @@ import { DetailsDialogComponent } from './common/details-dialog/details-dialog.c
 import { RankingComponent } from './common/ranking/ranking.component';
 import { SubmittedCardsComponent } from './common/submitted-cards/submitted-cards.component';
 import { SpinnerDialogContentComponent } from './common/spinner-dialog-content/spinner-dialog-content.component';
+import { WithdrawAmountComponent } from './pages/withdraw-amount/withdraw-amount.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { SpinnerDialogContentComponent } from './common/spinner-dialog-content/s
     DetailsDialogComponent,
     RankingComponent,
     SubmittedCardsComponent,
-    SpinnerDialogContentComponent
+    SpinnerDialogContentComponent,
+    WithdrawAmountComponent
   ],
   imports: [
     BrowserModule,

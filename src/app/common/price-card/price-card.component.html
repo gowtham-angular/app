@@ -5,6 +5,6 @@
         <h5 class="">Total Revenue:  ₹ {{user?.totalAmount + user?.profit}}</h5>
     </div>
     <div class="price-points">
-        <button mat-raised-button color="warn"> withdraw</button>
+        <button mat-raised-button color="warn" (click)="withdraw()"> withdraw</button>
     </div>
 </div>

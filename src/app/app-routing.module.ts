@@ -17,6 +17,7 @@ import { OrdersComponent } from './pages/orders/orders.component';
 import { AccountsComponent } from './pages/accounts/accounts.component';
 import { AuthGuard } from './auth-guard.service';
 import { PlayComponent } from './pages/play/play.component';
+import { WithdrawAmountComponent } from './pages/withdraw-amount/withdraw-amount.component';
 
 const routes: Routes = [
   { path: 'signup', component: SignupComponent, },
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path: 'partners', component: PartnersComponent, canActivate: [AuthGuard] },
   { path: 'terms', component: TermsComponent, canActivate: [AuthGuard] },
   { path: 'agreement', component: AgreementComponent, canActivate: [AuthGuard] },
+  { path: 'withdrawAmount', component: WithdrawAmountComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/signup', pathMatch: 'full' }
 ];
 
