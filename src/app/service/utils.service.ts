@@ -10,7 +10,7 @@ export class UtilsService {
   private loadingSubject = new BehaviorSubject<boolean>(false);
   isLoading$ = this.loadingSubject.asObservable();
 
-  isOrderSubmitted = new BehaviorSubject<boolean>(false);
+  isVipOneEnabled = new BehaviorSubject<boolean>(false);
   taskCount = new BehaviorSubject(0);
   amount = new BehaviorSubject(0);
   taskAmount = new BehaviorSubject(0);

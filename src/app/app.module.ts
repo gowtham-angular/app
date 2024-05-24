@@ -5,7 +5,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from '@angular/fire/compat';
 import { MaterialModule } from '../material/material.module';
-import { MatDialogModule } from '@angular/material/dialog';
 import { AppComponent } from './app.component';
 import { environment } from '../../environment.prod';
 import { SignupComponent } from './pages/signup/signup.component';

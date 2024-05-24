@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
+import { DataLayerService } from '../../data-layer.service';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -10,7 +10,11 @@ import { Router } from '@angular/router';
 export class SigninComponent {
   form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService, private _router: Router) {
+  constructor(
+    private formBuilder: FormBuilder, 
+    private dataLayerService: DataLayerService, 
+    private _router: Router
+  ) {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -19,7 +23,7 @@ export class SigninComponent {
 
   onSubmit() {
     if (this.form.valid) {
-      this.userService.signIntoFirebase(this.form.value)
+      this.dataLayerService.signInUser(this.form.value)
     }
   }
   gotoSignup() {

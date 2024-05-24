@@ -1,8 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { UtilsService } from '../../service/utils.service';
-import { UserService } from '../../service/user.service';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { take } from 'rxjs';
+import { Component } from '@angular/core';
+import { DataStorageService } from '../../data-storage.service';
 
 @Component({
   selector: 'app-mission-card',
@@ -10,41 +7,42 @@ import { take } from 'rxjs';
   styleUrl: './mission-card.component.scss'
 })
 export class MissionCardComponent {
-  @Input() user!: any;
-  count!: number;
-  prfit!: number;
-  isMissionComplete!: boolean;
-  constructor(private utilService: UtilsService,
-    private userService: UserService,
-    private auth: AngularFireAuth
-  ) {
-    this.userService.getUserData().pipe(take(1)).subscribe((users: any) => {
-      this.getAuthenticatedUser(users);
-    })
+  user!: any;
+  missionData: any;
+  quantity: any;
+  totalInvested!:any;
 
-    this.utilService.isMissionComplete.subscribe((flag: boolean) => {
-      this.isMissionComplete = flag;
+  constructor(private dataStorageService: DataStorageService) {
+    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.getTaskCount();
+    this.getAccountBalance();
+    this.getMissionData();
+  }
+
+  getTaskCount() {
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.dataStorageService.getCount(user?.id).subscribe((data) => {
+      if(data) {
+        this.quantity = data;
+      }
     })
   }
 
-  getAuthenticatedUser(users: any) {
-    try {
-      this.auth.user.subscribe((user: any) => {
-        if (user) {
-          const email = user.email;
-          const filteredUser = this.userService.filterUsersByEmail(users, email);
-          this.user = filteredUser[0];
-          this.utilService.getCount(this.user?.id).subscribe((data: any) => {
-            if (data) {
-              this.count = data.count;
-            }
-          })
-        }
-      });
-
-    } catch (error) {
-    }
+  getAccountBalance() {
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.dataStorageService.getAccountBalance(user?.id).subscribe((data) => {
+      if(data) {
+        this.totalInvested = data;
+      }
+    })
   }
 
-  
+  getMissionData() {
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.dataStorageService.getMissionAmount(user?.id).subscribe((data) => {
+      if(data) {
+        this.missionData = data;
+      }
+    })
+  }
 }

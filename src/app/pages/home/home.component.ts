@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { ProductsService } from '../../service/products.service';
 import { Observable, take } from 'rxjs';
-import { UserService } from '../../service/user.service';
+import { DataLayerService } from '../../data-layer.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { UtilsService } from '../../service/utils.service';
+import { DataStorageService } from '../../data-storage.service';
 
 @Component({
   selector: 'app-home',
@@ -12,6 +15,8 @@ export class HomeComponent {
   firstRow: any = [];
   secondRow: any = [];
   products: any = [];
+  user: any;
+  count: any;
 
   cards = [
     { imageUrl: '../../../assets/reading.png', title: 'Reading Mall', backgroundColor: '#0f3cc9', link: '/orders' },
@@ -22,8 +27,17 @@ export class HomeComponent {
   subscription = { imageUrl: '../../../assets/dollar-coins.png', title: 'Subscription Membership', backgroundColor: '#122caf' };
 
 
-  constructor(private _productService: ProductsService) {
+  constructor(
+    private _productService: ProductsService,
+    private dataLayerService: DataLayerService,
+    private auth: AngularFireAuth,
+    private utilService: UtilsService,
+    private dataStorageService: DataStorageService
+  ) {
 
+    this.dataLayerService.getUserData().subscribe((users: any) => {
+      this.getAuthenticatedUser(users);
+    })
     this.firstRow = [
       {
         img: '../../../assets/faq-chat.png',
@@ -85,5 +99,25 @@ export class HomeComponent {
         this.products = data.filter((item: any) => item.level === 'products');
       }
     })
+  }
+
+  getAuthenticatedUser(users: any) {
+    try {
+      this.auth.user.subscribe((user: any) => {
+        if (user) {
+          const email = user.email;
+          const filteredUser = this.dataLayerService.filterUsersByEmail(users, email);
+          this.user = filteredUser[0];
+          this.utilService.getCount(this.user?.id).subscribe((data: any) => {
+            if (data) {
+              this.count = data.count;
+              localStorage.setItem('user', JSON.stringify(this.user));
+              localStorage.setItem('count', this.count);
+            }
+          })
+        }
+      });
+    } catch (error) {
+    }
   }
 }

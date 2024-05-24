@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { UtilsService } from '../../service/utils.service';
-import { take } from 'rxjs';
 import { Router } from '@angular/router';
+import { DataStorageService } from '../../data-storage.service';
 
 @Component({
   selector: 'app-price-card',
@@ -11,16 +10,32 @@ import { Router } from '@angular/router';
 export class PriceCardComponent {
   @Input() user!: any;
   count!: number;
-  profit!: number;
-  constructor(private utilService: UtilsService, private router: Router) {
+  totalInvested!: any;
+  profit!: any;
+  constructor(private router: Router, private dataStorageService: DataStorageService) {
+    this.getAccountBalance();
+    this.getProfit();
+  }
 
-    this.utilService.taskCount.subscribe((data: number) => {
-      this.count = data;
-    });
+  getAccountBalance() {
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.dataStorageService.getAccountBalance(user?.id).subscribe((data) => {
+      if (data) {
+        this.totalInvested = data;
+      }
+    })
+  }
+
+  getProfit() {
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.dataStorageService.getProfit(user?.id).subscribe((data) => {
+      if (data) {
+        this.profit = data;
+      }
+    })
   }
 
   withdraw() {
-    console.log("asd");
     this.router.navigate(['/withdrawAmount'])
   }
 }

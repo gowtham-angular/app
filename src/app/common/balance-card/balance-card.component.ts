@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { DataStorageService } from '../../data-storage.service';
 
 @Component({
   selector: 'app-balance-card',
@@ -6,8 +7,42 @@ import { Component, Input } from '@angular/core';
   styleUrl: './balance-card.component.scss'
 })
 export class BalanceCardComponent {
-@Input() user!: any;
-@Input() count!: any;
-@Input() totalAmount!: number;
 
+  totalInvested: any;
+  profit: any;
+  count: any;
+  constructor(
+    private dataStorageService: DataStorageService
+  ) {
+    this.getAccountBalance();
+    this.getProfit();
+    this.getTaskCount();
+  }
+
+  getAccountBalance() {
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.dataStorageService.getAccountBalance(user?.id).subscribe((data) => {
+      if(data) {
+        this.totalInvested = data;
+      }
+    })
+  }
+
+  getProfit() {
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.dataStorageService.getProfit(user?.id).subscribe((data) => {
+      if(data) {
+        this.profit = data;
+      }
+    })
+  }
+
+  getTaskCount() {
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.dataStorageService.getCount(user?.id).subscribe((data) => {
+      if(data) {
+        this.count = data;
+      }
+    })
+  }
 }

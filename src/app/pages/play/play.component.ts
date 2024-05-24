@@ -1,6 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ProductsService } from '../../service/products.service';
-import { UserService } from '../../service/user.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UtilsService } from '../../service/utils.service';
 import { DetailsDialogComponent } from '../../common/details-dialog/details-dialog.component';
@@ -8,6 +7,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { FirestoreService } from '../../service/firestore.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, take } from 'rxjs';
+import { DataLayerService } from '../../data-layer.service';
+import { DataStorageService } from '../../data-storage.service';
 
 
 @Component({
@@ -23,121 +24,87 @@ export class PlayComponent {
   totalCount!: number;
   totalAmount!: number;
   totalCountFlag!: boolean;
+  vipOneFlag!: boolean;
   vipTwoFlag!: boolean;
+  vipThreeFlag!: boolean;
   isMissionComplete!: boolean;
+  countData!: any;
+  vipFlags!: any;
 
 
   constructor(
     private fireStore: AngularFirestore,
-    private auth: AngularFireAuth,
     public dialog: MatDialog,
-    private userService: UserService,
+    private dataStorageService: DataStorageService,
     private utilService: UtilsService,
     private fireStoreService: FirestoreService,
     private productService: ProductsService,
   ) {
     this.getProducts();
-    this.userService.getUserData().pipe(take(1)).subscribe((users: any) => {
-      this.getAuthenticatedUser(users);
-    });
+    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.getTotalInvested(this.user);
+    this.getVipFlags(this.user);
+    this.getTaskCount();
   }
 
-  getAuthenticatedUser(users: any) {
-    this.auth.user.subscribe((user: any) => {
-      if (user) {
-        const email = user.email;
-        const filteredUser = this.userService.filterUsersByEmail(users, email);
-        this.user = filteredUser[0];
-      }
-    });
-    setTimeout(() => {
-      this.getSubmittedTasks(this.user);
-    }, 1000)
-
-  }
-
-  getSubmittedTasks(user: any) {
-    this.fireStoreService.getData('vip_one_submitted', user.id).subscribe((data: any) => {
+  getTaskCount() {
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.dataStorageService.getCount(user?.id).subscribe((data) => {
       if (data) {
-        this.submittedData = data.arrayField;
-        this.totalCount = this.submittedData?.length;
-
-        if (this.totalCount > 19 && this.totalCount <= 39) {
-          this.totalCountFlag = true;
-          this.vipTwoFlag = true;
-        } else if (this.totalCount > 39) {
-          this.totalCountFlag = true;
-          this.vipTwoFlag = false;
-        } else {
-          this.vipTwoFlag = false;
-        }
-        let count = 0;
-
-        this.submittedData.forEach((element: any) => {
-          count += element.price;
-        });
-        this.totalAmount = (count * 1.5);
-        this.utilService.taskAmount.next(this.totalAmount);
-        this.utilService.updateCount(this.user?.id, this.totalCount);
-        this.fireStoreService.updateProfit(this.user?.id, this.totalAmount)
+        this.countData = data;
       }
-    });
+    })
   }
+  getTotalInvested(user: any) {
+    this.dataStorageService.getAccountBalance(user?.id).subscribe((data: any) => {
+      this.totalAmount = data?.totalInvested;
+    })
+  }
+
+  getVipFlags(user: any) {
+    this.dataStorageService.getVipFlags(user?.id).subscribe((items: any) => {
+      this.vipFlags = items.data;
+      if (this.vipFlags && this.vipFlags.length > 0) {
+        this.vipOneFlag = this.vipFlags[0].value;
+        this.vipTwoFlag = this.vipFlags[1].value;
+        this.vipThreeFlag = this.vipFlags[2].value;
+      }
+    })
+  }
+
 
   start() {
-    if (this.user) {
-      if (this.user?.totalAmount < 1) {
-        this.utilService.getSnackBar("Please Recharge before start the tasks.")
-      } else {
-        const dialogRef = this.dialog.open(DetailsDialogComponent);
-        dialogRef.afterClosed().subscribe((result: any) => {
-          this.utilService.isOrderSubmitted.next(true);
-        });
-      }
-
-    }
-  }
-
-  startVipTwo() {
-    if (this.user) {
-      if (this.user.totalInvested >= 0) {
-        this.isMissionComplete = true;
-        this.utilService.isMissionComplete.next(false);
-        if (this.user?.totalAmount < 1500) {
-          this.utilService.getSnackBar("Please Recharge Before Start the Day Two Tasks.");
+    if (this.vipOneFlag && this.countData?.taskCount < 20) {
+      if (this.user) {
+        if (this.totalAmount < 1) {
+          this.utilService.getSnackBar("Please Recharge before start the tasks.")
         } else {
-          this.utilService.getCount(this.user?.id).subscribe((data: any) => {
-            if (data) {
-              let count = data.count;
-              if (count === 37) {
-                this.fireStore.collection('users').doc(this.user.id).update({
-                  totalInvested: -1555
-                })
-              }
-              if (count === 39) {
-                this.fireStore.collection('users').doc(this.user.id).update({
-                  totalInvested: -555
-                })
-              }
 
-            }
-
-          })
           const dialogRef = this.dialog.open(DetailsDialogComponent);
           dialogRef.afterClosed().subscribe((result: any) => {
-            this.utilService.isVipTwoEnabled.next(true);
+            this.utilService.isVipOneEnabled.next(true);
+            this.utilService.isVipTwoEnabled.next(false);
           });
         }
+      }
+    }else {
+      // this.utilService.getSnackBar("Please Recharge before start the tasks.")
+    }
+
+    if (this.vipTwoFlag  && this.countData?.taskCount < 40) {
+      if (this.totalAmount < 1) {
+        this.utilService.getSnackBar("Please Recharge Before Start the Day Two Tasks.");
       } else {
-        this.isMissionComplete = false;
-        this.utilService.isMissionComplete.next(true);
         const dialogRef = this.dialog.open(DetailsDialogComponent);
         dialogRef.afterClosed().subscribe((result: any) => {
+          this.utilService.isVipOneEnabled.next(false);
           this.utilService.isVipTwoEnabled.next(true);
         });
       }
     }
+
   }
+
 
   getProducts() {
     this.productService.getAllProducts().subscribe((data: any) => {

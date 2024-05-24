@@ -1,6 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { UserService } from '../../service/user.service';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
@@ -13,7 +11,6 @@ export class SubmittedCardsComponent {
   @Input() submittedData: any;
 
   constructor(private fireStore: AngularFirestore){}
-
   
   }
 

@@ -1,13 +1,9 @@
 <app-title-header title="Ranking Tasks"></app-title-header>
 <div class="background-container">
-    <app-balance-card [user]="user" [count]="totalCount" [totalAmount]="totalAmount"></app-balance-card>
+    <app-balance-card></app-balance-card>
 
-    <div class="start_button" *ngIf="!totalCountFlag">
-        <button [disabled]="totalCountFlag" mat-raised-button color="warn" (click)="start()"> <mat-icon>play_circle</mat-icon> Account Start</button>
-    </div>
-
-    <div class="start_button" *ngIf="vipTwoFlag">
-        <button mat-raised-button color="warn" (click)="startVipTwo()"> <mat-icon>play_circle</mat-icon> Account Start</button>
+    <div class="start_button">
+        <button mat-raised-button color="warn" (click)="start()"> <mat-icon>play_circle</mat-icon> Account Start</button>
     </div>
 
     <div class="ranking_tasks">

@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { UserService } from '../../service/user.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FirestoreService } from '../../service/firestore.service';
 import { UtilsService } from '../../service/utils.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable, finalize, take } from 'rxjs';
+import { DataLayerService } from '../../data-layer.service';
 
 @Component({
   selector: 'app-orders',
@@ -23,7 +22,7 @@ export class OrdersComponent {
   vipTwoOriginalData: any;
   submittedData: any;
   submittedVipTwoData: any;
-  isOrderSubmitted!: boolean;
+  isVipOneEnabled!: boolean;
   isVipTwoEnabled!: boolean;
   ordersCount!: number;
   selectedFile!: File;
@@ -32,23 +31,24 @@ export class OrdersComponent {
   uploadProgress: Observable<number | undefined> | undefined;
   constructor(
     private storage: AngularFireStorage,
-    private firestore: AngularFirestore,
-    private userService: UserService, private auth: AngularFireAuth,
     private fireStoreService: FirestoreService,
     private utilService: UtilsService
   ) {
 
-    this.userService.getUserData().pipe(take(1)).subscribe((users: any) => {
-      this.getAuthenticatedUser(users);
-    });
+    this.user = JSON.parse(localStorage.getItem('user') || '{}');
 
-    this.utilService.isOrderSubmitted.subscribe((flag: boolean) => {
-      console.log(flag);
-      this.isOrderSubmitted = flag;
-    });
+    this.getVipOneTasks(this.user, 'vip_one');
+    this.getVipTwoTasks('vip_two');
 
     this.utilService.taskCount.subscribe((count: number) => {
       this.ordersCount = count;
+    })
+
+    this.utilService.isVipOneEnabled.subscribe((flag) => {
+      this.isVipOneEnabled = flag;
+    })
+    this.utilService.isVipTwoEnabled.subscribe((flag) => {
+      this.isVipTwoEnabled = flag;
     })
 
   }
@@ -74,7 +74,6 @@ export class OrdersComponent {
             this.fireStoreService.addReadingData(this.user?.id, downloadURL)
               .then(() => {
                 this.utilService.getSnackBar('Reading File added successfully.');
-                
               })
               .catch((error: any) => {
                 this.utilService.getSnackBar('Error adding product.');
@@ -88,39 +87,20 @@ export class OrdersComponent {
     }
   }
 
-  getAuthenticatedUser(users: any) {
-    try {
-      this.auth.user.subscribe((user: any) => {
-        if (user) {
-          const email = user.email;
-          const filteredUser = this.userService.filterUsersByEmail(users, email);
-          this.user = filteredUser[0];
-          this.getVipOneTasks(this.user, 'vip_one');
-          this.utilService.isVipTwoEnabled.subscribe((flag: boolean) => {
-            this.isVipTwoEnabled = flag;
-            if (flag) {
-              this.getVipTwoTasks('vip_two');
-            }
-          });
-        }
-      });
-
-    } catch (error) {
-    }
-  }
 
   getVipOneTasks(user: any, collectionName: string) {
     this.fireStoreService.getData(collectionName, user?.id).subscribe((data: any) => {
       this.vipOneRandomData = this.fireStoreService.selectRandomItem(data.arrayField);
+      //this.vipOneRandomData = this.fireStoreService.getNextItem(data.arrayField);
       this.vipOneOriginalData = this.fireStoreService.removeSelectedItem(data.arrayField, this.vipOneRandomData);
       this.getSubmittedTasks(user);
-
     });
   }
 
   getVipTwoTasks(collectionName: string) {
     this.fireStoreService.getData(collectionName, this.user?.id).subscribe((data: any) => {
-      this.vipTwoRandomData = this.fireStoreService.selectRandomItem(data.arrayField);
+      //this.vipTwoRandomData = this.fireStoreService.selectRandomItem(data.arrayField);
+      this.vipTwoRandomData = this.fireStoreService.getNextItem(data.arrayField);
       this.vipTwoOriginalData = this.fireStoreService.removeSelectedItem(data.arrayField, this.vipTwoRandomData);
       this.getSubmittedVipTwoTasks(this.user);
     });
@@ -129,7 +109,9 @@ export class OrdersComponent {
 
   getSubmittedTasks(user: any) {
     this.fireStoreService.getData('vip_one_submitted', user.id).subscribe((data: any) => {
-      this.submittedData = data.arrayField;
+      if (data) {
+        this.submittedData = data.arrayField;
+      }
     });
   }
 
@@ -139,6 +121,7 @@ export class OrdersComponent {
       this.submittedVipTwoData = data.arrayField;
     });
   }
+
 
 }
 

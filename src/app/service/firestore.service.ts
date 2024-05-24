@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, AngularFirestore } from '@angular/fire/compat/firestore';
-import { FieldValue, arrayRemove, arrayUnion } from 'firebase/firestore';
+import { FieldValue, arrayRemove, arrayUnion, increment } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -9,6 +9,8 @@ import { map } from 'rxjs/operators';
 })
 export class FirestoreService {
 
+  currentIndex: number = 0;
+  currentItem: any;
   constructor(private firestore: AngularFirestore) { }
 
   // Fetch data from Firestore
@@ -16,6 +18,15 @@ export class FirestoreService {
     return this.firestore.collection(collectionName).doc(id).valueChanges();
   }
 
+  getNextItem(data: any[]): any {
+   
+    if (data.length > 0) {
+
+      this.currentItem = data[this.currentIndex];
+      this.currentIndex = (this.currentIndex + 1) % data.length;
+      return this.currentItem;
+    }
+  }
   // Randomly select one item from the array
   selectRandomItem(data: any[]): any {
     const randomIndex = Math.floor(Math.random() * data.length);
@@ -31,18 +42,6 @@ export class FirestoreService {
   updateArray(collectionName: string, documentId: string, updatedData: any[]): Promise<void> {
     return this.firestore.collection(collectionName).doc(documentId).update({ dataArray: updatedData });
   }
-  // Combine all operations
-  // getRandomAndRemove(collectionName: string): Observable<any[]> {
-  //   return this.getData(collectionName).pipe(
-  //     map(data => {
-  //       const randomItem = this.selectRandomItem(data);
-  //       const newData = this.removeSelectedItem(data, randomItem);
-  //       // Optionally, you can update the Firestore collection with the new data
-  //       // this.firestore.collection(collectionName).set(newData);
-  //       return newData;
-  //     })
-  //   );
-  // }
 
   // Store array in Firestore
   storeArray(collectionName: string, documentId: string, dataArray: any[]): Promise<void> {
@@ -59,7 +58,7 @@ export class FirestoreService {
       arrayField: initialArray
     })
       .then(() => {
-        console.log('Array stored successfully');
+        console.log(collectionName, 'Array stored successfully');
       })
       .catch((error) => {
         console.error('Error storing array:', error);
@@ -85,11 +84,26 @@ export class FirestoreService {
     dataRef.update({
       arrayField: arrayRemove(data)
     })
+
+    this.updateProfit(userId, data.price * 1.5);
+    this.updateBalance(userId, data.price * 1.5);
+    this.updateTaskCount(userId);
   }
 
-  updateProfit(id: any, profit: any) {
-    this.firestore.collection('users').doc(id).update({
-      profit: profit
+  updateProfit(id: any, profit: number) {
+    this.firestore.collection('profit').doc(id).update({
+      profit: increment(profit)
+    });
+  }
+
+  updateBalance(id: any, profit: number) {
+    this.firestore.collection('total_invested').doc(id).update({
+      totalInvested: increment(profit)
+    });
+  }
+  updateTaskCount(id: any) {
+    this.firestore.collection('count').doc(id).update({
+      taskCount: increment(1)
     });
   }
 

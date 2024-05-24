@@ -2,7 +2,6 @@
     <div class="title">
         <div style="background-color: rgb(147, 202, 202); padding:  3px; border-radius: 3px;">No : <span>{{randomData?.id | uppercase}}</span></div>
         <p style="color: red; font-weight: bold;"> {{'payment pending'}}</p>
-        <p *ngIf="isMissionComplete" style="color: red; font-weight: bold;"> {{user?.totalInvested}}</p>
     </div>
     <div class="image" style="background-color: whitesmoke; padding: 5px; border-radius: 5px; margin: 10px;">
         <img [src]="randomData?.url" height="50" width="50" />
@@ -12,19 +11,19 @@
         <div class="product">
             <p>Product price</p>
             <div style="flex: 1"></div>
-            <h5>{{randomData?.price | number:'1.2-2'}}</h5>
+            <h5>{{isMissionComplete ? randomData?.price   : randomData?.price + randomData?.missionAmount | number:'1.2-2'}}</h5>
         </div>
         <div class="profit">
             <p>Profit</p>
             <div style="flex: 1"></div>
 
-            <h5>{{randomData?.price * 0.5 | number:'1.2-2'}}</h5>
+            <h5>{{randomData?.price * 1.5 | number:'1.2-2'}}</h5>
         </div>
         <div class="return">
             <p>Return</p>
             <div style="flex: 1"></div>
-            <h5>{{randomData?.price * 1.5 | number:'1.2-2'}}</h5>
+            <h5>{{randomData?.price * 2.5 | number:'1.2-2'}}</h5>
         </div>
     </div>
-    <button [disabled]="isMissionComplete" mat-raised-button color="primary" *ngIf="!randomData?.isSubmitted" (click)="submitVipOne()"> Submit</button>
+    <button [disabled]="isMissionComplete" mat-raised-button color="primary" *ngIf="!randomData?.isSubmitted" (click)="submitVip()"> Submit</button>
 </mat-card>
