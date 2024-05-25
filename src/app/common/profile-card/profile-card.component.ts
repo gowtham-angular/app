@@ -14,17 +14,29 @@ export class ProfileCardComponent {
   user!: any;
   count!: any;
   profit!: number;
+  flags: any;
   constructor(private dataStorageService: DataStorageService) {
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
     this.getTaskCount();
+    this.getVipFlags();
   }
 
 
   getTaskCount() {
     let user = JSON.parse(localStorage.getItem('user') || '{}');
     this.dataStorageService.getCount(user?.id).subscribe((data) => {
-      if(data) {
+      if (data) {
         this.count = data;
+      }
+    })
+  }
+
+  getVipFlags() {
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.dataStorageService.getVipFlags(user?.id).subscribe((item: any) => {
+      if (item) {
+        this.flags = item?.data.filter((val: any) =>  val.value === true)[0];
+        console.log(this.flags);
       }
     })
   }
