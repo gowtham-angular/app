@@ -11,18 +11,18 @@
         <div class="product">
             <p>Product price</p>
             <div style="flex: 1"></div>
-            <h5>{{submittedData?.price | number:'1.2-2'}}</h5>
+            <h5>₹ {{submittedData?.price | number:'1.2-2'}}</h5>
         </div>
         <div class="profit">
             <p>Profit</p>
             <div style="flex: 1"></div>
 
-            <h5>{{submittedData?.price * 1.5 | number:'1.2-2'}}</h5>
+            <h5>₹ {{submittedData?.price * 1.5 | number:'1.2-2'}}</h5>
         </div>
         <div class="return">
             <p>Return</p>
             <div style="flex: 1"></div>
-            <h5>{{submittedData?.price * 2.5 | number:'1.2-2'}}</h5>
+            <h5>₹ {{submittedData?.price * 2.5 | number:'1.2-2'}}</h5>
         </div>
     </div>
     <mat-divider></mat-divider>

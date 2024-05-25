@@ -9,6 +9,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, take } from 'rxjs';
 import { DataLayerService } from '../../data-layer.service';
 import { DataStorageService } from '../../data-storage.service';
+import { ConfirmationBoxComponent } from '../../common/confirmation-box/confirmation-box.component';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class PlayComponent {
   isMissionComplete!: boolean;
   countData!: any;
   vipFlags!: any;
+  vipThree: any;
 
 
   constructor(
@@ -41,6 +43,7 @@ export class PlayComponent {
     private productService: ProductsService,
   ) {
     this.getProducts();
+
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
     this.getTotalInvested(this.user);
     this.getVipFlags(this.user);
@@ -53,6 +56,7 @@ export class PlayComponent {
       if (data) {
         this.countData = data;
       }
+      this.getVipThree();
     })
   }
   getTotalInvested(user: any) {
@@ -71,13 +75,19 @@ export class PlayComponent {
       }
     })
   }
-
+  getVipThree() {
+    this.productService.getAllProducts().pipe(take(1)).subscribe((data: any) => {
+      if (data) {
+        this.vipThree = data.filter((item: any) => item.level === 'vip_3');
+      }
+    })
+  }
 
   start() {
     if (this.vipOneFlag && this.countData?.taskCount < 20) {
       if (this.user) {
         if (this.totalAmount < 1) {
-          this.utilService.getSnackBar("Please Recharge before start the tasks.")
+          this.utilService.openDialog('Tasks', 'Please Recharge before start the tasks.');
         } else {
 
           const dialogRef = this.dialog.open(DetailsDialogComponent);
@@ -87,13 +97,14 @@ export class PlayComponent {
           });
         }
       }
-    }else {
-      // this.utilService.getSnackBar("Please Recharge before start the tasks.")
+    } else if (this.vipOneFlag && this.countData?.taskCount == 20) {
+      //this.utilService.getSnackBar("Please Recharge before start the tasks.")
+        this.openDialog();
     }
 
-    if (this.vipTwoFlag  && this.countData?.taskCount < 40) {
+    if (this.vipTwoFlag && this.countData?.taskCount < 40) {
       if (this.totalAmount < 1) {
-        this.utilService.getSnackBar("Please Recharge Before Start the Day Two Tasks.");
+        this.utilService.openDialog('Recharge', 'Please Recharge Before Start the Day Two Tasks.');
       } else {
         const dialogRef = this.dialog.open(DetailsDialogComponent);
         dialogRef.afterClosed().subscribe((result: any) => {
@@ -126,6 +137,17 @@ export class PlayComponent {
     return [array[randomIndexes[0]], array[randomIndexes[1]]];
   }
 
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmationBoxComponent, {
+      width: '250px',
+      data: { title: 'Task Completed', message: 'Please Recharge before start the tasks.' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 }
 
 

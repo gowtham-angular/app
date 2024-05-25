@@ -9,12 +9,13 @@ import { DataStorageService } from '../../data-storage.service';
 })
 export class PriceCardComponent {
   @Input() user!: any;
-  count!: number;
+  count!: any;
   totalInvested!: any;
   profit!: any;
   constructor(private router: Router, private dataStorageService: DataStorageService) {
     this.getAccountBalance();
     this.getProfit();
+   
   }
 
   getAccountBalance() {
@@ -38,4 +39,6 @@ export class PriceCardComponent {
   withdraw() {
     this.router.navigate(['/withdrawAmount'])
   }
+
+  
 }

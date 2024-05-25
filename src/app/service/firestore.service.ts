@@ -18,14 +18,10 @@ export class FirestoreService {
     return this.firestore.collection(collectionName).doc(id).valueChanges();
   }
 
-  getNextItem(data: any[]): any {
-   
-    if (data.length > 0) {
+  getNextItem(data: any, currentCounter: number): any {
 
-      this.currentItem = data[this.currentIndex];
-      this.currentIndex = (this.currentIndex + 1) % data.length;
-      return this.currentItem;
-    }
+    const nextCounter = currentCounter + 1;
+    return data.find((obj: any) => obj.serialNo === nextCounter);
   }
   // Randomly select one item from the array
   selectRandomItem(data: any[]): any {
@@ -85,8 +81,14 @@ export class FirestoreService {
       arrayField: arrayRemove(data)
     })
 
-    this.updateProfit(userId, data.price * 1.5);
-    this.updateBalance(userId, data.price * 1.5);
+    if (collectionName === 'vip_one') {
+      this.updateProfit(userId, data.price * 1.5);
+      this.updateBalance(userId, data.price * 1.5);
+    } else if (collectionName === 'vip_two') {
+      this.updateProfit(userId, ((data.price * 3.5) / 3));
+      this.updateBalance(userId, ((data.price * 3.5) / 3));
+    }
+
     this.updateTaskCount(userId);
   }
 

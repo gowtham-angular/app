@@ -9,6 +9,7 @@ import { SpinnerDialogContentComponent } from '../spinner-dialog-content/spinner
 import { take } from 'rxjs';
 import { DataLayerService } from '../../data-layer.service';
 import { DataStorageService } from '../../data-storage.service';
+import { ConfirmationBoxComponent } from '../confirmation-box/confirmation-box.component';
 
 @Component({
   selector: 'app-ranking',
@@ -23,6 +24,7 @@ export class RankingComponent {
   totalAmount!: number;
   isMissionComplete!: boolean;
   countData: any;
+  totalInvested: any;
   constructor(
     private utilService: UtilsService,
     private firestoreService: FirestoreService,
@@ -36,7 +38,11 @@ export class RankingComponent {
       this.isMissionComplete = flag;
     });
 
+    this.utilService.isVipTwoEnabled.subscribe((flag: any) => {
+      this.isVipTwoEnabled = flag;
+    })
     this.getTaskCount();
+    this.getAccountBalance();
 
   }
 
@@ -48,10 +54,20 @@ export class RankingComponent {
       }
     })
   }
+
+  getAccountBalance() {
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.dataStorageService.getAccountBalance(user?.id).subscribe((data) => {
+      if (data) {
+        this.totalInvested = data;
+      }
+    })
+  }
+
   submitVip() {
 
     if (this.randomData && this.randomData.missionAmount > 0) {
-      this.utilService.getSnackBar('Please Contact Customer Support for Task completion');
+      this.utilService.openDialog('Task Confirmation','Please Contact Customer Support for Task completion');
       this.isMissionComplete = false;
       return;
     }

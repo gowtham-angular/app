@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { ConfirmationBoxComponent } from '../common/confirmation-box/confirmation-box.component';
+import { MatDialog } from '@angular/material/dialog';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +21,8 @@ export class UtilsService {
 
   constructor(
     private snackBar: MatSnackBar,
-    private fireStore: AngularFirestore
+    private fireStore: AngularFirestore,
+    private dialog: MatDialog
   ) { }
 
   setLoading(isLoading: boolean) {
@@ -32,15 +35,26 @@ export class UtilsService {
     });
   }
 
-  registerCount(id: any){
-    this.fireStore.collection('count').doc(id).set({count: 0})
+  registerCount(id: any) {
+    this.fireStore.collection('count').doc(id).set({ count: 0 })
   }
 
   updateCount(id: any, count: number) {
-    this.fireStore.collection('count').doc(id).update({count: count})
+    this.fireStore.collection('count').doc(id).update({ count: count })
   }
 
   getCount(id: any) {
     return this.fireStore.collection('count').doc(id).valueChanges();
+  }
+
+  openDialog(title: string, message: string): void {
+    const dialogRef = this.dialog.open(ConfirmationBoxComponent, {
+      width: '250px',
+      data: { title: title, message: message }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 }

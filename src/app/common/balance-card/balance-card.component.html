@@ -3,13 +3,13 @@
         <img src ="../../../assets/dollar-coins.png" style="height: 40px; width: 40px;">
         <div class="text">
             <p class="balance">Account Balance</p>
-            <h5 class="money">₹ {{totalInvested?.totalInvested}}</h5>
+            <h5 class="money">₹ {{totalInvested?.totalInvested | number:'1.2-2' }}</h5>
         </div>
     </div>
 
     <div class="card-container__details">
         <div class="earnings">
-            <p>₹ {{profit?.profit}}</p>
+            <p>₹ {{profit?.profit | number:'1.2-2' }}</p>
             <h5>Earns Today</h5>
         </div>
         <div class="earnings">

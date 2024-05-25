@@ -5,6 +5,7 @@ import { UtilsService } from '../../service/utils.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable, finalize, take } from 'rxjs';
 import { DataLayerService } from '../../data-layer.service';
+import { DataStorageService } from '../../data-storage.service';
 
 @Component({
   selector: 'app-orders',
@@ -28,21 +29,21 @@ export class OrdersComponent {
   selectedFile!: File;
   uploading: boolean = false;
   fileName: string = '';
+  count: any;
   uploadProgress: Observable<number | undefined> | undefined;
   constructor(
     private storage: AngularFireStorage,
     private fireStoreService: FirestoreService,
-    private utilService: UtilsService
+    private utilService: UtilsService,
+    private dataStorageService: DataStorageService
   ) {
 
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
-
-    this.getVipOneTasks(this.user, 'vip_one');
-    this.getVipTwoTasks('vip_two');
-
-    this.utilService.taskCount.subscribe((count: number) => {
-      this.ordersCount = count;
-    })
+    this.getTaskCount();
+    setTimeout(() => {
+      this.getVipOneTasks(this.user, 'vip_one');
+      this.getVipTwoTasks('vip_two');
+    }, 1000)
 
     this.utilService.isVipOneEnabled.subscribe((flag) => {
       this.isVipOneEnabled = flag;
@@ -51,6 +52,15 @@ export class OrdersComponent {
       this.isVipTwoEnabled = flag;
     })
 
+  }
+
+  getTaskCount() {
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.dataStorageService.getCount(user?.id).subscribe((data) => {
+      if (data) {
+        this.count = data;
+      }
+    })
   }
 
   onFileSelected(event: Event): void {
@@ -100,7 +110,10 @@ export class OrdersComponent {
   getVipTwoTasks(collectionName: string) {
     this.fireStoreService.getData(collectionName, this.user?.id).subscribe((data: any) => {
       //this.vipTwoRandomData = this.fireStoreService.selectRandomItem(data.arrayField);
-      this.vipTwoRandomData = this.fireStoreService.getNextItem(data.arrayField);
+      if (this.count?.taskCount > 19) {
+        let tempCount = this.count?.taskCount % 20;
+        this.vipTwoRandomData = this.fireStoreService.getNextItem(data.arrayField, tempCount);
+      }
       this.vipTwoOriginalData = this.fireStoreService.removeSelectedItem(data.arrayField, this.vipTwoRandomData);
       this.getSubmittedVipTwoTasks(this.user);
     });

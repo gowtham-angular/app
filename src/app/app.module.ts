@@ -42,6 +42,8 @@ import { RankingComponent } from './common/ranking/ranking.component';
 import { SubmittedCardsComponent } from './common/submitted-cards/submitted-cards.component';
 import { SpinnerDialogContentComponent } from './common/spinner-dialog-content/spinner-dialog-content.component';
 import { WithdrawAmountComponent } from './pages/withdraw-amount/withdraw-amount.component';
+import { VipThreeComponent } from './common/vip-three/vip-three.component';
+import { ConfirmationBoxComponent } from './common/confirmation-box/confirmation-box.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +80,9 @@ import { WithdrawAmountComponent } from './pages/withdraw-amount/withdraw-amount
     RankingComponent,
     SubmittedCardsComponent,
     SpinnerDialogContentComponent,
-    WithdrawAmountComponent
+    WithdrawAmountComponent,
+    VipThreeComponent,
+    ConfirmationBoxComponent
   ],
   imports: [
     BrowserModule,
@@ -92,6 +96,7 @@ import { WithdrawAmountComponent } from './pages/withdraw-amount/withdraw-amount
     { provide: HTTP_INTERCEPTORS, useClass: HttpsInterceptor, multi: true },
     provideAnimationsAsync()
   ],
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }

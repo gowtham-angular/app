@@ -1,7 +1,7 @@
 <div class="mission-card mat-elevation-z4">
     <div class="mission-content">
         <p class="balance">Mission in progress</p>
-        <p class="mission"> ₹ {{missionData?.mission !== 0 ? totalInvested?.totalInvested : missionData?.missionAmount}}</p>
+        <p class="mission"> ₹ {{(missionData?.mission !== 0 ? totalInvested?.totalInvested : missionData?.missionAmount) | number:'1.2-2'}}</p>
         <h5 class="">Completed quantity: {{quantity?.taskCount % 20}}</h5>
     </div>
     <div class="mission-points">

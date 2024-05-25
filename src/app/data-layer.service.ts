@@ -192,12 +192,14 @@ export class DataLayerService {
   }
   getProducts(id: any, collectionName: string) {
     let products = [];
+
     this._productService.getAllProducts().subscribe((data: any) => {
       if (data) {
         let newArray = data.map((obj: any) => ({
           ...obj,
           isSubmitted: false,
-          missionAmount: 0
+          missionAmount: 0,
+          serialNo: 0
         }));
 
         let level = '';
@@ -206,7 +208,8 @@ export class DataLayerService {
         } else if (collectionName == "vip_two") {
           level = "vip_2";
         }
-        products = newArray.filter((item: any) => item.level === level);
+        products = this.addObjectWithIncrementalCounter(newArray.filter((item: any) => item.level === level));
+
         this._fireStoreService.createSubmittedCollection(collectionName, id);
         this.assignVipData(id, collectionName, products);
       }
@@ -274,4 +277,17 @@ export class DataLayerService {
     this.firestore.collection('total_invested').doc(id).update({ totalInvested: increment(-(data?.amount)) })
     this.firestore.collection('profit').doc(id).update({ profit: 0 });
   }
+
+
+
+  addObjectWithIncrementalCounter(array: any) {
+
+    let newArray: any = [];
+    array.forEach((element: any, index: any) => {
+      newArray.push({ ...element, serialNo: index + 1 })
+    });
+    return newArray;
+  }
 }
+
+
