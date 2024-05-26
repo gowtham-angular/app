@@ -29,8 +29,8 @@ export class DataStorageService {
   getCount(id: any) {
     return this.fireStore.collection('count').doc(id).valueChanges();
   }
-  getMissionAmount(id: any) {
-    return this.fireStore.collection('mission_amount').doc(id).valueChanges();
+  getMissionFlag(id: any) {
+    return this.fireStore.collection('isMissionEnabled').doc(id).valueChanges();
   }
 
   getWithdrawalPassword(id: any) {

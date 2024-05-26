@@ -82,7 +82,6 @@ export class WithdrawAmountComponent {
       amount: this.totalInvested?.totalInvested,
       wPassword: ''
     });
-    console.log(this.totalInvested?.totalInvested);
   }
 
   getTaskCount() {

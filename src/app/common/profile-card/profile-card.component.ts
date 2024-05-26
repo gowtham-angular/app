@@ -36,7 +36,6 @@ export class ProfileCardComponent {
     this.dataStorageService.getVipFlags(user?.id).subscribe((item: any) => {
       if (item) {
         this.flags = item?.data.filter((val: any) =>  val.value === true)[0];
-        console.log(this.flags);
       }
     })
   }

@@ -44,6 +44,7 @@ export class RankingComponent {
     this.getTaskCount();
     this.getAccountBalance();
 
+  
   }
 
   getTaskCount() {
@@ -67,10 +68,19 @@ export class RankingComponent {
   submitVip() {
 
     if (this.randomData && this.randomData.missionAmount > 0) {
-      this.utilService.openDialog('Task Confirmation','Please Contact Customer Support for Task completion');
+      this.utilService.openDialog('Task Confirmation', 'Please Contact Customer Support for Task completion');
+
+      if (this.randomData) {
+        if (this.randomData.serialNo === 17 || this.randomData.serialNo === 20) {
+          if (this.randomData.missionAmount > 0) {
+            this.firestoreService.updateMissionEnabledFlag(this.user?.id, true, this.randomData.missionAmount);
+          }
+        }
+      }
       this.isMissionComplete = false;
       return;
     }
+    this.firestoreService.updateMissionEnabledFlag(this.user?.id, false, 0);
     this.isMissionComplete = true;
     let docData = { ...this.randomData, isSubmitted: true, time: Timestamp.fromDate(new Date()) }
     let dataArray = [];
@@ -91,7 +101,10 @@ export class RankingComponent {
         this.firestoreService.updateSubmittedData('vip_two_submitted', this.user.id, dataArray);
         this.firestoreService.removeData('vip_two', this.user.id, this.randomData);
         this.utilService.isVipTwoEnabled.next(false);
+
+
       }
+
 
       this.router.navigate(['/play']);
     }, 2000);

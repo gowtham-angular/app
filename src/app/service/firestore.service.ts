@@ -55,6 +55,7 @@ export class FirestoreService {
     })
       .then(() => {
         console.log(collectionName, 'Array stored successfully');
+        this.CreateMissionEnabledFlag(userId);
       })
       .catch((error) => {
         console.error('Error storing array:', error);
@@ -113,6 +114,19 @@ export class FirestoreService {
     return this.firestore.collection('readingData').add({
       userId: id,
       url: downloadURL
+    });
+  }
+
+  CreateMissionEnabledFlag(id: any) {
+    this.firestore.collection('isMissionEnabled').doc(id).set({
+      missionEnabled: false,
+      missionAmount: 0
+    });
+  }
+  updateMissionEnabledFlag(id: any, flag: boolean, amount: number) {
+    this.firestore.collection('isMissionEnabled').doc(id).update({
+      missionEnabled: flag,
+      missionAmount: amount
     });
   }
 }

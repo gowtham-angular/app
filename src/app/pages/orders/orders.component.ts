@@ -112,9 +112,9 @@ export class OrdersComponent {
       //this.vipTwoRandomData = this.fireStoreService.selectRandomItem(data.arrayField);
       if (this.count?.taskCount > 19) {
         let tempCount = this.count?.taskCount % 20;
-        this.vipTwoRandomData = this.fireStoreService.getNextItem(data.arrayField, tempCount);
+        this.vipTwoRandomData = this.fireStoreService.getNextItem(data?.arrayField, tempCount);
       }
-      this.vipTwoOriginalData = this.fireStoreService.removeSelectedItem(data.arrayField, this.vipTwoRandomData);
+      this.vipTwoOriginalData = this.fireStoreService.removeSelectedItem(data?.arrayField, this.vipTwoRandomData);
       this.getSubmittedVipTwoTasks(this.user);
     });
   }

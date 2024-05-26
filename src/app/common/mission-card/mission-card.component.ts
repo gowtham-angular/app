@@ -39,7 +39,7 @@ export class MissionCardComponent {
 
   getMissionData() {
     let user = JSON.parse(localStorage.getItem('user') || '{}');
-    this.dataStorageService.getMissionAmount(user?.id).subscribe((data) => {
+    this.dataStorageService.getMissionFlag(user?.id).subscribe((data: any) => {
       if(data) {
         this.missionData = data;
       }

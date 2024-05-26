@@ -67,7 +67,7 @@ export class PlayComponent {
 
   getVipFlags(user: any) {
     this.dataStorageService.getVipFlags(user?.id).subscribe((items: any) => {
-      this.vipFlags = items.data;
+      this.vipFlags = items?.data;
       if (this.vipFlags && this.vipFlags.length > 0) {
         this.vipOneFlag = this.vipFlags[0].value;
         this.vipTwoFlag = this.vipFlags[1].value;
