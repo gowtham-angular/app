@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { DataStorageService } from '../../data-storage.service';
 
 @Component({
   selector: 'app-submitted-cards',
@@ -9,11 +10,19 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 export class SubmittedCardsComponent {
   @Input() user: any;
   @Input() submittedData: any;
-
-  constructor(private fireStore: AngularFirestore){
-
+  totalInvestedData: any;
+  constructor(private fireStore: AngularFirestore, private dataStorageService: DataStorageService) {
+    this.getAccountBalance();
   }
-  
+  getAccountBalance() {
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.dataStorageService.getAccountBalance(user?.id).subscribe((data) => {
+      if (data) {
+        this.totalInvestedData = data;
+      }
+    })
   }
 
- 
+}
+
+

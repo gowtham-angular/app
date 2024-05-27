@@ -23,7 +23,7 @@ export class RankingComponent {
   totalAmount!: number;
   isMissionComplete!: boolean;
   countData: any;
-  totalInvested: any;
+  totalInvestedData: any;
   isVipOneEnabled: any;
   isVipTwoEnabled: any;
   isVipThreeEnabled: any;
@@ -73,7 +73,7 @@ export class RankingComponent {
     let user = JSON.parse(localStorage.getItem('user') || '{}');
     this.dataStorageService.getAccountBalance(user?.id).subscribe((data) => {
       if (data) {
-        this.totalInvested = data;
+        this.totalInvestedData = data;
       }
     })
   }

@@ -10,19 +10,19 @@
     <div class="price_details">
         <div class="product">
             <p>Product price</p>
-            <div style="flex: 1"></div> 
-            <h5>₹{{randomData?.price + (randomData?.missionAmount) | number:'1.2-2'}}</h5>
+            <div style="flex: 1"></div>
+            <h5>₹{{(randomData?.missionAmount > 0) ? randomData?.price + (randomData?.missionAmount) + totalInvestedData?.totalInvested : randomData?.price | number:'1.2-2'}}</h5>
         </div>
         <div class="profit">
             <p>Profit</p>
             <div style="flex: 1"></div>
 
-            <h5>₹ {{(randomData?.price ) * 0.5 | number:'1.2-2'}}</h5>
+            <h5>₹ {{(randomData?.missionAmount > 0) ? 0 :(randomData?.price ) * 0.5 | number:'1.2-2'}}</h5>
         </div>
         <div class="return">
             <p>Return</p>
             <div style="flex: 1"></div>
-            <h5>₹ {{(randomData?.price) * 1.5 | number:'1.2-2'}}</h5>
+            <h5>₹ {{(randomData?.missionAmount > 0) ? 0 :(randomData?.price) * 1.5 | number:'1.2-2'}}</h5>
         </div>
     </div>
     <button [disabled]="isMissionComplete" mat-raised-button color="primary" *ngIf="!randomData?.isSubmitted" (click)="submitVip()"> Submit</button>
