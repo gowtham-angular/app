@@ -10,7 +10,9 @@ export class SubmittedCardsComponent {
   @Input() user: any;
   @Input() submittedData: any;
 
-  constructor(private fireStore: AngularFirestore){}
+  constructor(private fireStore: AngularFirestore){
+
+  }
   
   }
 

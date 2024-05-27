@@ -111,6 +111,7 @@ export class HomeComponent {
           this.utilService.getCount(this.user?.id).subscribe((data: any) => {
             if (data) {
               this.count = data.count;
+              localStorage.clear();
               localStorage.setItem('user', JSON.stringify(this.user));
               localStorage.setItem('count', this.count);
             }

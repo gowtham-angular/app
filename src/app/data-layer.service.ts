@@ -174,6 +174,7 @@ export class DataLayerService {
         this.createVipsFlagCollection(id);
         this.getProducts(id, 'vip_one');
         this.getProducts(id, 'vip_two');
+        this.getProducts(id, 'vip_three');
       })
       .catch(error => {
         console.error('Error adding user:', error);
@@ -207,6 +208,8 @@ export class DataLayerService {
           level = "vip_1";
         } else if (collectionName == "vip_two") {
           level = "vip_2";
+        } else if (collectionName == "vip_three") {
+          level = "vip_3";
         }
         products = this.addObjectWithIncrementalCounter(newArray.filter((item: any) => item.level === level));
 
@@ -277,7 +280,6 @@ export class DataLayerService {
     this.firestore.collection('total_invested').doc(id).update({ totalInvested: increment(-(data?.amount)) })
     this.firestore.collection('profit').doc(id).update({ profit: 0 });
   }
-
 
 
   addObjectWithIncrementalCounter(array: any) {

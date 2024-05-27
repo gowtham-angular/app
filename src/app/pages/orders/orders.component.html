@@ -6,7 +6,9 @@
         <mat-tab label="Ranking Tasks" style="background-color: beige;">
             <app-ranking [randomData]="vipOneRandomData" [originalData]="vipOneOriginalData" *ngIf="isVipOneEnabled"></app-ranking>
             <app-ranking [randomData]="vipTwoRandomData" [originalData]="vipTwoOriginalData" *ngIf=" isVipTwoEnabled"></app-ranking>
+            <app-ranking [randomData]="vipThreeRandomData" [originalData]="vipThreeOriginalData" *ngIf=" isVipThreeEnabled"></app-ranking>
             <div style="height: auto; overflow-y: scroll; min-height: 400px;">
+                <app-submitted-cards *ngFor="let item of submittedVipThreeData" [user]="user" [submittedData]="item"></app-submitted-cards>
                 <app-submitted-cards *ngFor="let item of submittedVipTwoData" [user]="user" [submittedData]="item"></app-submitted-cards>
                 <app-submitted-cards *ngFor="let item of submittedData" [user]="user" [submittedData]="item"></app-submitted-cards>
             </div>
@@ -24,8 +26,6 @@
                 <p *ngIf="uploadProgress | async as progress">{{ progress }}%</p>
                 <mat-progress-bar *ngIf="uploadProgress | async as progress" mode="determinate" [value]="progress"></mat-progress-bar>
             </div>
-            <!-- <app-nodata [imageUrl]="reading.imageUrl"
-                [title]="reading.title"></app-nodata> -->
             <app-tabs></app-tabs>
         </mat-tab>
 

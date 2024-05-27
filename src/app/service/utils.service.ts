@@ -13,10 +13,11 @@ export class UtilsService {
   isLoading$ = this.loadingSubject.asObservable();
 
   isVipOneEnabled = new BehaviorSubject<boolean>(false);
+  isVipTwoEnabled = new BehaviorSubject<boolean>(false);
+  isVipThreeEnabled = new BehaviorSubject<boolean>(false);
   taskCount = new BehaviorSubject(0);
   amount = new BehaviorSubject(0);
   taskAmount = new BehaviorSubject(0);
-  isVipTwoEnabled = new BehaviorSubject<boolean>(false);
   isMissionComplete = new BehaviorSubject<boolean>(false);
 
   constructor(

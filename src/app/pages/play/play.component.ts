@@ -1,15 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { ProductsService } from '../../service/products.service';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UtilsService } from '../../service/utils.service';
 import { DetailsDialogComponent } from '../../common/details-dialog/details-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { FirestoreService } from '../../service/firestore.service';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, take } from 'rxjs';
-import { DataLayerService } from '../../data-layer.service';
 import { DataStorageService } from '../../data-storage.service';
-import { ConfirmationBoxComponent } from '../../common/confirmation-box/confirmation-box.component';
 
 
 @Component({
@@ -32,14 +26,13 @@ export class PlayComponent {
   countData!: any;
   vipFlags!: any;
   vipThree: any;
+  displayVipThree: any;
 
 
   constructor(
-    private fireStore: AngularFirestore,
     public dialog: MatDialog,
     private dataStorageService: DataStorageService,
     private utilService: UtilsService,
-    private fireStoreService: FirestoreService,
     private productService: ProductsService,
   ) {
     this.getProducts();
@@ -56,7 +49,6 @@ export class PlayComponent {
       if (data) {
         this.countData = data;
       }
-      this.getVipThree();
     })
   }
   getTotalInvested(user: any) {
@@ -75,52 +67,70 @@ export class PlayComponent {
       }
     })
   }
-  getVipThree() {
-    this.productService.getAllProducts().pipe(take(1)).subscribe((data: any) => {
-      if (data) {
-        this.vipThree = data.filter((item: any) => item.level === 'vip_3');
-      }
-    })
-  }
+
+
 
   start() {
+
+    // VIP ONE START 
     if (this.vipOneFlag && this.countData?.taskCount < 20) {
       if (this.user) {
         if (this.totalAmount < 1) {
-          this.utilService.openDialog('Tasks', 'Please Recharge before start the tasks.');
+          this.utilService.openDialog('Recharge', 'Please Recharge before start the tasks.');
         } else {
 
           const dialogRef = this.dialog.open(DetailsDialogComponent);
           dialogRef.afterClosed().subscribe((result: any) => {
-            this.utilService.isVipOneEnabled.next(true);
-            this.utilService.isVipTwoEnabled.next(false);
+              this.utilService.isVipOneEnabled.next(true);
+              this.utilService.isVipTwoEnabled.next(false);
+              this.utilService.isVipThreeEnabled.next(false);
           });
         }
       }
     } else if (this.vipOneFlag && this.countData?.taskCount == 20) {
-      //this.utilService.getSnackBar("Please Recharge before start the tasks.")
-        this.openDialog();
+      this.utilService.openDialog('Task Completed', 'Please Recharge before start the tasks');
     }
 
+    // VIP TWO START
     if (this.vipTwoFlag && this.countData?.taskCount < 40) {
       if (this.totalAmount < 1) {
         this.utilService.openDialog('Recharge', 'Please Recharge Before Start the Day Two Tasks.');
       } else {
         const dialogRef = this.dialog.open(DetailsDialogComponent);
-        dialogRef.afterClosed().subscribe((result: any) => {
-          this.utilService.isVipOneEnabled.next(false);
-          this.utilService.isVipTwoEnabled.next(true);
+        dialogRef.afterClosed().subscribe((result: any) => { 
+            this.utilService.isVipOneEnabled.next(false);
+            this.utilService.isVipTwoEnabled.next(true);
+            this.utilService.isVipThreeEnabled.next(false);
         });
       }
+    } else if (this.vipTwoFlag && this.countData?.taskCount == 40) {
+      this.utilService.openDialog('Task Completed', 'Please Recharge before start the tasks');
+    }
+
+    // VIP THREE STARTS
+
+    if (this.vipThreeFlag && this.countData?.taskCount < 65) {
+      if (this.totalAmount < 1) {
+        this.utilService.openDialog('Recharge', 'Please Recharge Before Start the Day Three Tasks.');
+      } else {
+        const dialogRef = this.dialog.open(DetailsDialogComponent);
+        dialogRef.afterClosed().subscribe((result: any) => {
+            this.utilService.isVipOneEnabled.next(false);
+            this.utilService.isVipTwoEnabled.next(false);
+            this.utilService.isVipThreeEnabled.next(true);
+        });
+      }
+    } else if (this.vipThree && this.countData?.taskCount == 65) {
+      this.utilService.openDialog('Task Completed', 'Please Recharge before start the tasks');
     }
 
   }
-
 
   getProducts() {
     this.productService.getAllProducts().subscribe((data: any) => {
       if (data) {
         let tempProducts = data.filter((item: any) => item.level === 'products');
+        this.displayVipThree = data.filter((item: any) => item.level === 'vip_3');
         this.products = this.chooseRandomTwo(tempProducts);
       }
     })
@@ -135,18 +145,6 @@ export class PlayComponent {
       }
     }
     return [array[randomIndexes[0]], array[randomIndexes[1]]];
-  }
-
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(ConfirmationBoxComponent, {
-      width: '250px',
-      data: { title: 'Task Completed', message: 'Please Recharge before start the tasks.' }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
   }
 }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class DetailsDialogComponent implements OnInit {
   currentTime!: string;
 
-  constructor(public dialogRef: MatDialogRef<DetailsDialogComponent>, private router: Router) { }
+  constructor(public dialogRef: MatDialogRef<DetailsDialogComponent>, private router: Router, private ngZone: NgZone) { }
 
   ngOnInit(): void {
     this.getCurrentTime();
@@ -23,7 +23,12 @@ export class DetailsDialogComponent implements OnInit {
 
   startTask() {
     // Close the dialog
-    this.router.navigate(['/orders'])
-    this.dialogRef.close();
+    this.ngZone.run(() => {
+      this.dialogRef.close(0);
+      this.router.navigate(['/orders'])
+      this.dialogRef.close();
+    });
+   
+    
   }
 }

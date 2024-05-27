@@ -21,10 +21,14 @@ export class OrdersComponent {
   vipOneOriginalData: any;
   vipTwoRandomData: any;
   vipTwoOriginalData: any;
+  vipThreeRandomData: any;
+  vipThreeOriginalData: any;
   submittedData: any;
   submittedVipTwoData: any;
+  submittedVipThreeData: any;
   isVipOneEnabled!: boolean;
   isVipTwoEnabled!: boolean;
+  isVipThreeEnabled!: boolean;
   ordersCount!: number;
   selectedFile!: File;
   uploading: boolean = false;
@@ -43,6 +47,7 @@ export class OrdersComponent {
     setTimeout(() => {
       this.getVipOneTasks(this.user, 'vip_one');
       this.getVipTwoTasks('vip_two');
+      this.getVipThreeTasks('vip_three');
     }, 1000)
 
     this.utilService.isVipOneEnabled.subscribe((flag) => {
@@ -50,7 +55,10 @@ export class OrdersComponent {
     })
     this.utilService.isVipTwoEnabled.subscribe((flag) => {
       this.isVipTwoEnabled = flag;
-    })
+    });
+    this.utilService.isVipThreeEnabled.subscribe((flag) => {
+      this.isVipThreeEnabled = flag;
+    });
 
   }
 
@@ -101,7 +109,6 @@ export class OrdersComponent {
   getVipOneTasks(user: any, collectionName: string) {
     this.fireStoreService.getData(collectionName, user?.id).subscribe((data: any) => {
       this.vipOneRandomData = this.fireStoreService.selectRandomItem(data.arrayField);
-      //this.vipOneRandomData = this.fireStoreService.getNextItem(data.arrayField);
       this.vipOneOriginalData = this.fireStoreService.removeSelectedItem(data.arrayField, this.vipOneRandomData);
       this.getSubmittedTasks(user);
     });
@@ -109,7 +116,6 @@ export class OrdersComponent {
 
   getVipTwoTasks(collectionName: string) {
     this.fireStoreService.getData(collectionName, this.user?.id).subscribe((data: any) => {
-      //this.vipTwoRandomData = this.fireStoreService.selectRandomItem(data.arrayField);
       if (this.count?.taskCount > 19) {
         let tempCount = this.count?.taskCount % 20;
         this.vipTwoRandomData = this.fireStoreService.getNextItem(data?.arrayField, tempCount);
@@ -119,10 +125,21 @@ export class OrdersComponent {
     });
   }
 
+  getVipThreeTasks(collectionName: string) {
+    this.fireStoreService.getData(collectionName, this.user?.id).subscribe((data: any) => {
+      if (this.count?.taskCount > 19) {
+        let tempCount = this.count?.taskCount % 20;
+        this.vipThreeRandomData = this.fireStoreService.getNextItem(data?.arrayField, tempCount);
+      }
+      this.vipThreeOriginalData = this.fireStoreService.removeSelectedItem(data?.arrayField, this.vipThreeRandomData);
+      this.getSubmittedVipThreeTasks(this.user);
+    });
+  }
 
   getSubmittedTasks(user: any) {
     this.fireStoreService.getData('vip_one_submitted', user.id).subscribe((data: any) => {
       if (data) {
+        console.log(data.arrayField);
         this.submittedData = data.arrayField;
       }
     });
@@ -132,6 +149,11 @@ export class OrdersComponent {
   getSubmittedVipTwoTasks(user: any) {
     this.fireStoreService.getData('vip_two_submitted', user.id).subscribe((data: any) => {
       this.submittedVipTwoData = data.arrayField;
+    });
+  }
+  getSubmittedVipThreeTasks(user: any) {
+    this.fireStoreService.getData('vip_three_submitted', user.id).subscribe((data: any) => {
+      this.submittedVipThreeData = data.arrayField;
     });
   }
 

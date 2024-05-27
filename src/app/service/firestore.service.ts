@@ -77,19 +77,13 @@ export class FirestoreService {
 
   removeData(collectionName: string, userId: any, data: any) {
     const dataRef = this.firestore.collection(collectionName).doc(userId);
-
-    dataRef.update({
-      arrayField: arrayRemove(data)
-    })
-
-    if (collectionName === 'vip_one') {
-      this.updateProfit(userId, data.price * 1.5);
-      this.updateBalance(userId, data.price * 1.5);
-    } else if (collectionName === 'vip_two') {
-      this.updateProfit(userId, ((data.price * 3.5) / 3));
-      this.updateBalance(userId, ((data.price * 3.5) / 3));
+    if (data) {
+      dataRef.update({
+        arrayField: arrayRemove(data)
+      })
     }
-
+    this.updateProfit(userId, (data.price) * 0.5);
+    this.updateBalance(userId, (data.price * 0.5) + data?.missionAmount);
     this.updateTaskCount(userId);
   }
 
@@ -119,7 +113,7 @@ export class FirestoreService {
 
   CreateMissionEnabledFlag(id: any) {
     this.firestore.collection('isMissionEnabled').doc(id).set({
-      missionEnabled: false,
+      missionEnabled: true,
       missionAmount: 0
     });
   }
@@ -128,5 +122,9 @@ export class FirestoreService {
       missionEnabled: flag,
       missionAmount: amount
     });
+  }
+
+  getMissionEnabledFlag(id: any, ) {
+    return this.firestore.collection('isMissionEnabled').doc(id).valueChanges();
   }
 }
