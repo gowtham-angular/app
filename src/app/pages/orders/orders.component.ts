@@ -108,7 +108,7 @@ export class OrdersComponent {
 
   getVipOneTasks(user: any, collectionName: string) {
     this.fireStoreService.getData(collectionName, user?.id).subscribe((data: any) => {
-      this.vipOneRandomData = this.fireStoreService.selectRandomItem(data.arrayField);
+      this.vipOneRandomData = this.fireStoreService.getNextItem(data.arrayField, this.count?.taskCount);
       this.vipOneOriginalData = this.fireStoreService.removeSelectedItem(data.arrayField, this.vipOneRandomData);
       this.getSubmittedTasks(user);
     });

@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
 })
 export class DepositComponent {
   openWhatsApp(): void {
-    window.open('https://wa.me/9840213601', '_self');
+    window.open('https://wa.me/9943465863', '_self');
   }
 }
