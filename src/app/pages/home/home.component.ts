@@ -34,8 +34,9 @@ export class HomeComponent {
     private utilService: UtilsService,
     private dataStorageService: DataStorageService
   ) {
-
+console.log("---construtore");
     this.dataLayerService.getUserData().subscribe((users: any) => {
+      console.log("---construtore", users);
       this.getAuthenticatedUser(users);
     })
     this.firstRow = [
@@ -102,6 +103,7 @@ export class HomeComponent {
   }
 
   getAuthenticatedUser(users: any) {
+    console.log("asdasdasdasdasdasd", users)
     try {
       this.auth.user.subscribe((user: any) => {
         if (user) {
