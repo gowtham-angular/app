@@ -38,7 +38,7 @@ export class BalanceCardComponent {
   }
 
   getTaskCount() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getCount(user?.id).subscribe((data) => {
       if(data) {
         this.count = data;
