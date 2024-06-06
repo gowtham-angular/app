@@ -106,9 +106,11 @@ console.log("---construtore");
     console.log("asdasdasdasdasdasd", users)
     try {
       this.auth.user.subscribe((user: any) => {
+        console.log("user", user)
         if (user) {
           const email = user.email;
           const filteredUser = this.dataLayerService.filterUsersByEmail(users, email);
+          console.log("filter", filteredUser)
           this.user = filteredUser[0];
           this.utilService.getCount(this.user?.id).subscribe((data: any) => {
             if (data) {
@@ -116,8 +118,8 @@ console.log("---construtore");
               // localStorage.clear();
               // localStorage.setItem('user', JSON.stringify(this.user));
               // localStorage.setItem('count', this.count);
-              // this.dataStorageService.eraseCookie("user");
-              // this.dataStorageService.eraseCookie("count");
+              this.dataStorageService.eraseCookie("user");
+              this.dataStorageService.eraseCookie("count");
               console.log(this.user);
               console.log(this.user);
               this.dataStorageService.setCookie("user", JSON.stringify(this.user), 60);
