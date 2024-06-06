@@ -114,11 +114,13 @@ export class HomeComponent {
               // localStorage.clear();
               // localStorage.setItem('user', JSON.stringify(this.user));
               // localStorage.setItem('count', this.count);
-              this.dataStorageService.eraseCookie("user");
-              this.dataStorageService.eraseCookie("count");
-
+              // this.dataStorageService.eraseCookie("user");
+              // this.dataStorageService.eraseCookie("count");
+              console.log(this.user);
+              console.log(this.user);
               this.dataStorageService.setCookie("user", JSON.stringify(this.user), 60);
               this.dataStorageService.setCookie("count", this.count, 60);
+              console.log("cookie tested");
             }
           })
         }

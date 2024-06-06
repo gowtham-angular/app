@@ -69,5 +69,5 @@ export class DataStorageService {
 
   eraseCookie(name: string): void {
     document.cookie = `${name}=; Max-Age=-99999999;`;
-}
+  }
 }
