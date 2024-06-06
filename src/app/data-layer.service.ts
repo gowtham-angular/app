@@ -122,6 +122,9 @@ export class DataLayerService {
   }
 
   filterUsersByEmail(users: any, email: string): any {
+    console.log("emailddd", users);
+    console.log("sdfsdfsdf", email);
+    console.log("finding", users.filter((user: any) => user.email === email));
     return users.filter((user: any) => user.email === email);
   }
 
