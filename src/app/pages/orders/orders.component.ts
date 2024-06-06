@@ -139,7 +139,6 @@ export class OrdersComponent {
   getSubmittedTasks(user: any) {
     this.fireStoreService.getData('vip_one_submitted', user.id).subscribe((data: any) => {
       if (data) {
-        console.log(data.arrayField);
         this.submittedData = data.arrayField;
       }
     });

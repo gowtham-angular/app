@@ -34,9 +34,7 @@ export class HomeComponent {
     private utilService: UtilsService,
     private dataStorageService: DataStorageService
   ) {
-console.log("---construtore");
     this.dataLayerService.getUserData().subscribe((users: any) => {
-      console.log("---construtore", users);
       this.getAuthenticatedUser(users);
     })
     this.firstRow = [
@@ -103,14 +101,11 @@ console.log("---construtore");
   }
 
   getAuthenticatedUser(users: any) {
-    console.log("asdasdasdasdasdasd", users)
     try {
       this.auth.user.subscribe((user: any) => {
-        console.log("user", user)
         if (user) {
           const email = user.email;
           const filteredUser = this.dataLayerService.filterUsersByEmail(users, email);
-          console.log("filter", filteredUser)
           this.user = filteredUser[0];
           this.utilService.getCount(this.user?.id).subscribe((data: any) => {
             if (data) {
@@ -120,11 +115,8 @@ console.log("---construtore");
               // localStorage.setItem('count', this.count);
               this.dataStorageService.eraseCookie("user");
               this.dataStorageService.eraseCookie("count");
-              console.log(this.user);
-              console.log(this.user);
               this.dataStorageService.setCookie("user", JSON.stringify(this.user), 60);
               this.dataStorageService.setCookie("count", this.count, 60);
-              console.log("cookie tested");
             }
           })
         }
