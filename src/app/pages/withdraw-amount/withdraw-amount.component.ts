@@ -27,7 +27,7 @@ export class WithdrawAmountComponent {
       amount: ['', Validators.required],
       wPassword: ['', Validators.required],
     });
-    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.getAccountBalance();
     this.getTaskCount();
   }
@@ -68,7 +68,7 @@ export class WithdrawAmountComponent {
 
 
   getAccountBalance() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getAccountBalance(user?.id).subscribe((data) => {
       if (data) {
         this.totalInvested = data;
@@ -85,7 +85,7 @@ export class WithdrawAmountComponent {
   }
 
   getTaskCount() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getCount(user?.id).subscribe((data) => {
       if (data) {
         this.count = data;

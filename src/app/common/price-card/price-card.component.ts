@@ -19,7 +19,7 @@ export class PriceCardComponent {
   }
 
   getAccountBalance() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getAccountBalance(user?.id).subscribe((data) => {
       if (data) {
         this.totalInvested = data;
@@ -28,7 +28,7 @@ export class PriceCardComponent {
   }
 
   getProfit() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getProfit(user?.id).subscribe((data) => {
       if (data) {
         this.profit = data;

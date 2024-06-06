@@ -1,0 +1,9 @@
+RewriteEngine On
+
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} d
+RewriteRule ^ - [L]
+
+RewriteRunle ^ /index.html
+
+Options All -Indexes

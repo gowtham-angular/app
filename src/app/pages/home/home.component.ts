@@ -110,10 +110,15 @@ export class HomeComponent {
           this.user = filteredUser[0];
           this.utilService.getCount(this.user?.id).subscribe((data: any) => {
             if (data) {
-              this.count = data.count;
-              localStorage.clear();
-              localStorage.setItem('user', JSON.stringify(this.user));
-              localStorage.setItem('count', this.count);
+              this.count = data.count | 0;
+              // localStorage.clear();
+              // localStorage.setItem('user', JSON.stringify(this.user));
+              // localStorage.setItem('count', this.count);
+              this.dataStorageService.eraseCookie("user");
+              this.dataStorageService.eraseCookie("count");
+
+              this.dataStorageService.setCookie("user", JSON.stringify(this.user), 60);
+              this.dataStorageService.setCookie("count", this.count, 60);
             }
           })
         }
@@ -121,4 +126,6 @@ export class HomeComponent {
     } catch (error) {
     }
   }
+
+
 }

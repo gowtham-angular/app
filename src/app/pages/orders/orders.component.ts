@@ -42,7 +42,7 @@ export class OrdersComponent {
     private dataStorageService: DataStorageService
   ) {
 
-    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.getTaskCount();
     setTimeout(() => {
       this.getVipOneTasks(this.user, 'vip_one');
@@ -63,7 +63,7 @@ export class OrdersComponent {
   }
 
   getTaskCount() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getCount(user?.id).subscribe((data) => {
       if (data) {
         this.count = data;

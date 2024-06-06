@@ -16,14 +16,14 @@ export class ProfileCardComponent {
   profit!: number;
   flags: any;
   constructor(private dataStorageService: DataStorageService) {
-    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.getTaskCount();
     this.getVipFlags();
   }
 
 
   getTaskCount() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user =JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getCount(user?.id).subscribe((data) => {
       if (data) {
         this.count = data;
@@ -32,7 +32,7 @@ export class ProfileCardComponent {
   }
 
   getVipFlags() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getVipFlags(user?.id).subscribe((item: any) => {
       if (item) {
         this.flags = item?.data.filter((val: any) =>  val.value === true)[0];

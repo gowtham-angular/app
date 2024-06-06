@@ -20,7 +20,7 @@ export class BalanceCardComponent {
   }
 
   getAccountBalance() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getAccountBalance(user?.id).subscribe((data) => {
       if(data) {
         this.totalInvested = data;
@@ -29,7 +29,7 @@ export class BalanceCardComponent {
   }
 
   getProfit() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getProfit(user?.id).subscribe((data) => {
       if(data) {
         this.profit = data;
@@ -38,7 +38,7 @@ export class BalanceCardComponent {
   }
 
   getTaskCount() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getCount(user?.id).subscribe((data) => {
       if(data) {
         this.count = data;

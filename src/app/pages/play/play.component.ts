@@ -37,14 +37,14 @@ export class PlayComponent {
   ) {
     this.getProducts();
 
-    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.getTotalInvested(this.user);
     this.getVipFlags(this.user);
     this.getTaskCount();
   }
 
   getTaskCount() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getCount(user?.id).subscribe((data) => {
       if (data) {
         this.countData = data;

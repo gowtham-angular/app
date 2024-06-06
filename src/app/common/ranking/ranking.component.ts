@@ -37,7 +37,7 @@ export class RankingComponent {
     private dataStorageService: DataStorageService
   ) {
 
-    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.utilService.isMissionComplete.subscribe((flag: boolean) => {
       this.isMissionComplete = flag;
     });
@@ -61,7 +61,7 @@ export class RankingComponent {
   }
 
   getTaskCount() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getCount(user?.id).subscribe((data) => {
       if (data) {
         this.countData = data;
@@ -70,7 +70,7 @@ export class RankingComponent {
   }
 
   getAccountBalance() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user =JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getAccountBalance(user?.id).subscribe((data) => {
       if (data) {
         this.totalInvestedData = data;
@@ -79,7 +79,7 @@ export class RankingComponent {
   }
 
   getMissionEnabled() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.firestoreService.getMissionEnabledFlag(user?.id).subscribe((data: any) => {
       if (data) {
         this.isMissionEnabled = data.missionEnabled;

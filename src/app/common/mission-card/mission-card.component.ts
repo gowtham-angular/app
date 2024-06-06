@@ -13,14 +13,14 @@ export class MissionCardComponent {
   totalInvested!:any;
 
   constructor(private dataStorageService: DataStorageService) {
-    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.getTaskCount();
     this.getAccountBalance();
     this.getMissionData();
   }
 
   getTaskCount() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getCount(user?.id).subscribe((data) => {
       if(data) {
         this.quantity = data;
@@ -29,7 +29,7 @@ export class MissionCardComponent {
   }
 
   getAccountBalance() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getAccountBalance(user?.id).subscribe((data) => {
       if(data) {
         this.totalInvested = data;
@@ -38,7 +38,7 @@ export class MissionCardComponent {
   }
 
   getMissionData() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getMissionFlag(user?.id).subscribe((data: any) => {
       if(data) {
         this.missionData = data;

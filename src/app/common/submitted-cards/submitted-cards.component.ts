@@ -15,7 +15,7 @@ export class SubmittedCardsComponent {
     this.getAccountBalance();
   }
   getAccountBalance() {
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    let user = JSON.parse(this.dataStorageService.getCookie('user') || '{}');
     this.dataStorageService.getAccountBalance(user?.id).subscribe((data) => {
       if (data) {
         this.totalInvestedData = data;
